@@ -22,7 +22,15 @@
 
         <li><a href="/home"><i class="fa fa-home"></i> Home <span></span></a></li>
 
-        <li><a><i class="fa fa-bar-chart-o"></i> Dashboards <span class="fa fa-chevron-down"></span></a>
+        <li><a><i class="fa fa-wrench"></i> Portfolio <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="/DashExample/app1">Backtest</a></li>
+            <li><a href="/DashExample/app2">Correlation</a></li>
+            <li><a href="/DashExample/app2">Rebalancing</a></li>
+          </ul>
+        </li>
+
+        <li><a><i class="fa fa-wrench"></i> Saving <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             <li><a href="/DashExample/app1">dash app1</a></li>
             <li><a href="/DashExample/app2">dash app2</a></li>
@@ -30,7 +38,7 @@
         </li>
         
         {% if current_user.username %}
-        <li><a><i class="fa fa-cog"></i> Setting <span class="fa fa-chevron-down"></span></a>
+        <li><a><i class="fa fa-cog"></i> Settings <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             {% if Is_admin %}
               <li><a href="/setting/add_user">Add User</a></li>
@@ -59,12 +67,12 @@
         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
     </a>
     {% endif %}
-    <a data-toggle="tooltip" data-placement="top" title="FullScreen TODO">
+    <!-- <a data-toggle="tooltip" data-placement="top" title="FullScreen TODO">
       <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
     </a>
     <a data-toggle="tooltip" data-placement="top" title="Lock TODO">
       <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-    </a>
+    </a> -->
     <a data-toggle="tooltip" data-placement="top" title="Logout" href="/logout">
       <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
     </a>

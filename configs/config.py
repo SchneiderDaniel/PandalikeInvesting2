@@ -1,8 +1,10 @@
 import os
 
 class Config(object):
-    SECRET_KEY = 'key'
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///db/database.db'
+    RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
+    RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     ADMIN = {'username': os.environ.get('ADMIN_USER'),
              'email': os.environ.get('ADMIN_EMAIL'),
@@ -18,23 +20,6 @@ class Config(object):
 
 class ProductionConfig(Config):
     DEBUG = False
-
-  
-
-
-
-
-    # PostgreSQL database
-    # SQLALCHEMY_DATABASE_URI = 'postgresql://{}:{}@{}:{}/{}'.format(
-    #     os.environ.get('DATABASE_USER'),
-    #     os.environ.get('DATABASE_PASSWORD'),
-    #     os.environ.get('DATABASE_HOST'),
-    #     os.environ.get('DATABASE_PORT'),
-    #     os.environ.get('DATABASE_NAME')
-    # )
-
-    
-
 
 class DebugConfig(Config):
     DEBUG = True
