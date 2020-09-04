@@ -51,7 +51,7 @@ def login():
 @blueprint.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('base_blueprint.login'))
+    return redirect(url_for('home_blueprint.index'))
 
 
 @blueprint.route('/shutdown')
