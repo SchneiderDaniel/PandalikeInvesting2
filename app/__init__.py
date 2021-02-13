@@ -3,7 +3,7 @@ from flask_login import current_user
 from .extensions import db, login_manager
 from importlib import import_module
 from .base.models import User
-from Dashapps import Dash_App1, Dash_App2
+from dashapps import Dash_App1, Dash_App2
 from os import path
 import logging
 
