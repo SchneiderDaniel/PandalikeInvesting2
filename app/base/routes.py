@@ -16,7 +16,13 @@ from .models import User
 def route_default():
     return redirect(url_for('home_blueprint.index'))
 
+@blueprint.route('/terms')
+def terms():
+    return render_template('terms.html')
 
+@blueprint.route('/about')
+def about():
+    return render_template('about.html')
 
 @blueprint.route('/page_<error>')
 def route_errors(error):
