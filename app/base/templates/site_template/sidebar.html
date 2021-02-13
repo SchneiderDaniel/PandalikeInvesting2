@@ -1,15 +1,30 @@
 <div class="sidebar-header">
-  <h5>PandalikeInvesting</h5>
+
+  <div class="container h-100">
+    <div class="row align-items-center h-100">
+        <div class="col-md mx-auto">       
+          <img src="/static/images/img.png" class="img-fluid" alt="Responsive image">       
+        </div>
+        <div class="col-6 mx-auto">     
+          <h5>Pandalike  <br/> Investing</h5>     
+      </div>
+    </div>
+</div>
+
 </div>
 
 <ul class="list-unstyled components">
   <!-- <div class="profile_pic">
     <img src="/static/images/img.png" alt="..." class="img-circle profile_img">
   </div> -->
-  <li><a href="/home"><i class="fa fa-info-circle"></i> Home <span></span></a></li>
+  
+  <li><a href="/home"><i class="fa fa-home"></i> Home <span></span></a></li>
+
+  <li><a href="#"><i class="fa fa-th-list"></i> Portfolio <span></span></a></li>
+
   <li>
-      <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Portfolio </a>
-      <ul class="collapse list-unstyled" id="homeSubmenu">
+      <a href="#toolsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-wrench"></i> Tools </a>
+      <ul class="collapse list-unstyled" id="toolsSubmenu">
           <li>
               <a href="/DashExample/app1">Backtest</a>
           </li>
@@ -21,49 +36,29 @@
           </li>
       </ul>
   </li>
-  <li>
-      <a href="#">About</a>
-      <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
-      <ul class="collapse list-unstyled" id="pageSubmenu">
-          <li>
-              <a href="#">Page 1</a>
-          </li>
-          <li>
-              <a href="#">Page 2</a>
-          </li>
-          <li>
-              <a href="#">Page 3</a>
-          </li>
-      </ul>
-  </li>
-  <li>
-      <a href="#">Portfolio</a>
-  </li>
-  <li>
-      <a href="#">Contact</a>
-  </li>
-  {% if current_user.username %}
-    <li><a><i class="fa fa-cog"></i> Settings <span class="fa fa-chevron-down"></span></a>
-      <ul class="nav child_menu">
-        {% if Is_admin %}
-          <li><a href="/setting/add_user">Add User</a></li>
-          <li><a href="/setting/delete_user">Delete User</a></li>
-          <li><a href="/setting/setting_password">Setting User Password</a></li>
-        {% else %}
-          <li><a href="/setting/change_password">Change Password</a></li>
-        {% endif %}
-      </ul>
-    </li>
-  {% endif %}
 
+  <li>
+      <a href="#settingsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-cogs"></i> Settings </a>
+      <ul class="collapse list-unstyled" id="settingsSubmenu">
+        {% if Is_admin %}
+        <li><a href="/setting/add_user">Add User</a></li>
+        <li><a href="/setting/delete_user">Delete User</a></li>
+        <li><a href="/setting/setting_password">Setting User Password</a></li>
+      {% else %}
+        <li><a href="/setting/change_password">Change Password</a></li>
+      {% endif %}
+      </ul>
+  </li>
+
+
+  <li><a href="#"><i class="fa fa-envelope"></i> Contact <span></span></a></li>
+
+  <li><a href="#"><i class="fa fa-info-circle"></i> About <span></span></a></li>
 
 </ul>
 
 <ul class="list-unstyled CTAs">
   <li>
-      <a href="" class="download">Visit Youtube </a>
+      <a href="" class="download"> Youtube </a>
   </li>
-  <!-- <li>
-      <a href="" class="article">Back to article</a>
-  </li> -->
 </ul>
