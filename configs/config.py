@@ -15,13 +15,6 @@ class Config(object):
              'email': os.environ.get('ADMIN_EMAIL'),
              'password':  os.environ.get('ADMIN_PASSWORD')}
 
-    # THEME SUPPORT
-    #  if set then url_for('static', filename='', theme='')
-    #  will add the theme name to the static URL:
-    #    /static/<DEFAULT_THEME>/filename
-    # DEFAULT_THEME = "themes/dark"
-    DEFAULT_THEME = None
-
 
 class ProductionConfig(Config):
     DEBUG = False
