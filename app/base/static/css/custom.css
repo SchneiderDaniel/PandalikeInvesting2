@@ -25,6 +25,11 @@ b {
     
 }
 
+.b_black {
+    color: black;
+    font-weight: bold;
+}
+
 a, a:hover, a:focus {
     color: inherit;
     text-decoration: none;
@@ -137,10 +142,16 @@ h1, h2, h3, h4, h5, h6 {
 
 
 a.article, a.article:hover {
-    background: #cecccc; !important;
+    background: #cecccc !important;
     color: #fff !important;
 }
 
+.signature {
+
+    color: black !important; 
+    font-family: Brush Script MT, Brush Script Std, cursive !important; 
+    font-size: xx-large !important; 
+}
 
 /* ---------------------------------------------------
     CONTENT STYLE
