@@ -31,6 +31,10 @@
   <body>
     {% block body %}
       <div class="wrapper">
+
+        
+
+
         {% block sidebar %}
           <nav id="sidebar">
             {% include "site_template/sidebar.html" %}
@@ -42,7 +46,13 @@
             {% include "site_template/top_navigation.html" %} 
           {% endblock top_navigation %}
 
+          <nav id="flash">
+            {% include "site_template/flash.html" %}
+          </nav>
+
           {% block content %}
+          {% from "_formhelpers.html" import render_field, render_recaptcha %}
+          
             {{ content }}
           {% endblock content %}
         </div>
