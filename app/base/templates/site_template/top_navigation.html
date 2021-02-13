@@ -20,13 +20,13 @@
                 <div class="dropdown-menu dropdown-menu-lg-right">
                     {% if current_user.username %}
                   {% if Is_admin %}
-                  <button class="dropdown-item" href="/setting/add_user" type="button">Admin Settings</button>
+                  <button class="dropdown-item" type="button"><a href="/setting/add_user">Admin Settings</a></button>
                   {% else %}
-                  <button class="dropdown-item" href="/setting/change_password" type="button">Settings</button>
+                  <button class="dropdown-item"  type="button"><a href="/setting/change_password">Settings</a></button>
                   {% endif %}
-                  <button class="dropdown-item" href="/logout" type="button">Log Out</button>
+                  <button class="dropdown-item"  type="button"><a href="/logout">Log Out</a></button>
                   {% else %}
-                  <button class="dropdown-item" href="/login" type="button">Log In</button>
+                  <button class="dropdown-item" type="button"><a href="/login">Log In</a></button>
                   {% endif %}
                 </div>
               </div>
