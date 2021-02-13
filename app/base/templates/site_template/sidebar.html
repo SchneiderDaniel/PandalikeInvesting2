@@ -18,7 +18,7 @@
     <img src="/static/images/img.png" alt="..." class="img-circle profile_img">
   </div> -->
   
-  <li><a href="/home"><i class="fa fa-home"></i> Home <span></span></a></li>
+  <li><a href="{{ url_for( 'home_blueprint.index') }}"><i class="fa fa-home"></i> Home <span></span></a></li>
 
   <li><a href="#"><i class="fa fa-th-list"></i> Portfolio <span></span></a></li>
 
@@ -52,9 +52,9 @@
   </li>
   {% endif %}
 
-  <li><a href="#"><i class="fa fa-envelope"></i> Contact <span></span></a></li>
+  <li><a href="{{ url_for( 'contact_blueprint.index') }}"><i class="fa fa-envelope"></i> Contact <span></span></a></li>
 
-  <li><a href="/about"><i class="fa fa-info-circle"></i> About <span></span></a></li>
+  <li><a href="{{ url_for( 'base_blueprint.about') }}"><i class="fa fa-info-circle"></i> About <span></span></a></li>
 
 </ul>
 
