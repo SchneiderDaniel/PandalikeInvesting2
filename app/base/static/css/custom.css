@@ -111,6 +111,7 @@ a[data-toggle="collapse"] {
     position: absolute;
     top: 50%;
     right: 20px;
+    left:auto;
     transform: translateY(-50%);
 }
 
