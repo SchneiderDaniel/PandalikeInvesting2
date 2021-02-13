@@ -18,7 +18,7 @@
                   <i class="fa fa-user"></i> Account
                 </button>
                 <div class="dropdown-menu dropdown-menu-lg-right">
-                    {% if current_user.username %}
+                  {% if current_user.username %}
                   {% if Is_admin %}
                   <button class="dropdown-item" type="button"><a href="/setting/add_user">Admin Settings</a></button>
                   {% else %}
