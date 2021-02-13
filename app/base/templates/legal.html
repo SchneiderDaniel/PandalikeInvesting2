@@ -1,0 +1,78 @@
+{% extends "base_site.html" %}
+
+{% block title %} Legal Notice {% endblock title %}
+
+{% block stylesheets %}
+  {{ super() }}
+{% endblock stylesheets %}
+
+{% block content %}
+<br>
+
+<div class="content-section">
+    <h1 class="display-7">Legal Notice</h1>
+    <p class="lead">
+        <br>
+        Presented by:<br>
+    </p>
+   
+    <p>
+        Pandalike Investing <br>
+        Daniel Schneider <br>
+        Oberjesinger Street 1 <br>
+        71154 Nufringen <br>
+    </p>
+    <p class="lead">
+        Responsible for content:
+    </p>
+    <p>
+        Daniel Schneider <br>
+        Private person <br>
+        Oberjesinger Street 1 <br>
+        71154 Nufringen <br>
+    </p>
+
+    <hr class="my-4">
+    <!-- <p>It uses utility classes for typography and spacing to space content out within the larger container.</p> -->
+    <p class="lead">
+        <a class="btn btn-primary btn-lg" href="{{ url_for( 'base_blueprint.about') }}" role="button"> <span class="fas fa-envelope"></span> Contact Us</a>
+    </p>
+
+</div>
+
+<div class="content-section">
+    <h1 class="display-7">Impressum</h1>
+    <p class="lead">
+        <br>
+        Angaben gemäß § 5 TMG:<br>
+    </p>
+   
+    <p>
+        Pandalike Investing <br>
+        Daniel Schneider <br>
+        Privatperson <br>
+        Oberjesinger Straße 1 <br>
+        71154 Nufringen <br>
+    </p>
+    <p class="lead">
+        Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:
+    </p>
+    <p>
+        Daniel Schneider <br>
+        Oberjesinger Straße 1 <br>
+        71154 Nufringen <br>
+    </p>
+
+    <hr class="my-4">
+    <!-- <p>It uses utility classes for typography and spacing to space content out within the larger container.</p> -->
+    <p class="lead">
+        <a class="btn btn-primary btn-lg" href="{{ url_for( 'base_blueprint.about') }}" role="button"> <span class="fas fa-envelope"></span> Schreiben Sie uns</a>
+    </p>
+
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ super() }}
+{% endblock javascripts %}
+
