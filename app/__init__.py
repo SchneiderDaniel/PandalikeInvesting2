@@ -1,6 +1,6 @@
 from flask import Flask, url_for
 from flask_login import current_user
-from .extensions import db, login_manager
+from .extensions import db, login_manager, mail
 from importlib import import_module
 from .base.models import User
 from Dashapps import Dash_App1, Dash_App2
@@ -10,6 +10,7 @@ import logging
 def register_extensions(app):
     db.init_app(app)
     login_manager.init_app(app)
+    mail.init_app(app)
 
 
 def register_blueprints(app):

@@ -2,6 +2,7 @@ from . import blueprint
 from flask import render_template,flash, redirect, url_for
 from flask_login import login_required, current_user
 from .forms import ContactForm
+from app.mail_util import sendEMailToAdmin
 
 # @blueprint.route('/')
 # def index():
@@ -13,7 +14,7 @@ def index():
     contact_form = ContactForm()
     if contact_form.validate_on_submit():
 
-        # sendEMailToAdmin(contact_form.email.data,contact_form.name.data,contact_form.body.data)
+        sendEMailToAdmin(contact_form.email.data,contact_form.name.data,contact_form.body.data)
         flash(
             f'Thanks {contact_form.name.data}, we have received your message. We will respond soon!', 'success')
         return redirect(url_for( 'home_blueprint.index'))

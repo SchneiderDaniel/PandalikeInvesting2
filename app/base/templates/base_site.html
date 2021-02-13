@@ -20,6 +20,7 @@
       <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
       <link href="{{ url_for('static', filename='css/tiles.css') }}" rel="stylesheet">
       <link href="{{ url_for('static', filename='css/footer.css') }}" rel="stylesheet">
+      <link href="{{ url_for('static', filename='css/buttons.css') }}" rel="stylesheet">
       <!-- Font Awesome JS -->
       <script>
         FontAwesomeConfig = { searchPseudoElements: true }
@@ -31,9 +32,6 @@
   <body>
     {% block body %}
       <div class="wrapper">
-
-        
-
 
         {% block sidebar %}
           <nav id="sidebar">
@@ -51,8 +49,7 @@
           </nav>
 
           {% block content %}
-          {% from "_formhelpers.html" import render_field, render_recaptcha %}
-          
+          {% from "_formhelpers.html" import render_field, render_recaptcha %}  
             {{ content }}
           {% endblock content %}
         </div>
