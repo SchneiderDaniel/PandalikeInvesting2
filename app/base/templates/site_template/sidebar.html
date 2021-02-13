@@ -36,7 +36,8 @@
           </li>
       </ul>
   </li>
-
+  
+  {% if current_user.username %}
   <li>
       <a href="#settingsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-cogs"></i> Settings </a>
       <ul class="collapse list-unstyled" id="settingsSubmenu">
@@ -49,7 +50,7 @@
       {% endif %}
       </ul>
   </li>
-
+  {% endif %}
 
   <li><a href="#"><i class="fa fa-envelope"></i> Contact <span></span></a></li>
 
