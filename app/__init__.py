@@ -1,17 +1,34 @@
 from flask import Flask, url_for
 from flask_login import current_user
-from .extensions import db, login_manager, mail
+from .extensions import db, login_manager, mail, admin
+from flask_admin.menu import  MenuLink
+from flask_admin.contrib.sqla import ModelView
+from flask_admin import expose
 from importlib import import_module
 from .base.models import User
 from Dashapps import Dash_App1, Dash_App2
 from os import path
 import logging
 
+
+
+
 def register_extensions(app):
     db.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
+    admin.init_app(app)
+    init_admin()
 
+class MyView(ModelView):
+
+    def is_accessible(self):
+        is_admin = current_user.is_authenticated and current_user.username == app.config['ADMIN']['username']
+        return is_admin
+
+def init_admin():
+    admin.add_link(MenuLink(name='Go Back', category='', url='../'))
+    admin.add_view(MyView(User, db.session))
 
 def register_blueprints(app):
     for module_name in ('base', 'home', 'tools', 'setting', 'contact'):
@@ -58,9 +75,9 @@ def apply_themes(app):
     """
     @app.context_processor
     def override_url_for():
-        Is_admin = current_user.is_authenticated and current_user.username == app.config['ADMIN']['username']
+        is_admin = current_user.is_authenticated and current_user.username == app.config['ADMIN']['username']
         return dict(url_for = _generate_url_for_theme,
-                    Is_admin = Is_admin )
+                    Is_admin = is_admin )
 
     def _generate_url_for_theme(endpoint, **values):
         if endpoint.endswith('static'):
