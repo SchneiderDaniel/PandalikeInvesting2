@@ -11,10 +11,10 @@ class Config(object):
     MAIL_USE_SSL = True
     MAIL_USERNAME = os.environ.get('EMAIL_USER')
     MAIL_PASSWORD = os.environ.get('EMAIL_PASS')
-    ADMIN = {'username': os.environ.get('ADMIN_USER'),
-             'email': os.environ.get('ADMIN_EMAIL'),
-             'password':  os.environ.get('ADMIN_PASSWORD')}
-
+    ADMIN_USERNAME = os.environ.get('ADMIN_USER')
+    ADMIN_EMAIL = os.environ.get('ADMIN_MAIL')
+    ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD')
+    SECURITY_PASSWORD_SALT = "qweqweqwe"
 
 class ProductionConfig(Config):
     DEBUG = False

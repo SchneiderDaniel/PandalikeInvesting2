@@ -26,7 +26,7 @@ def register_extensions(app):
 class MyView(ModelView):
 
     def is_accessible(self):
-        # is_admin = current_user.is_authenticated and current_user.username == app.config['ADMIN']['username']
+        # is_admin = current_user.is_authenticated and current_user.username == app.config['ADMIN_USERNAME']
         # return is_admin
         return True
 
@@ -46,36 +46,25 @@ def configure_database(app):
 
     @app.before_first_request
     def initialize_database():
+        db.drop_all()
         db.create_all()
-
-
-        defaultRole = Role.query.filter_by(name='default').first()
-        if defaultRole: defaultRole.delete_from_db()
-        defaultRole = Role(id=0, name='default')
-        defaultRole.add_to_db()
-
-        memberRole = Role.query.filter_by(name='member').first()
-        if memberRole: memberRole.delete_from_db()
-        memberRole = Role(id=1,name='member')
-        memberRole.add_to_db()
-
-        adminRole = Role.query.filter_by(name='admin').first()
-        if adminRole: adminRole.delete_from_db()
-        adminRole = Role(id=2,name='admin')
-        adminRole.add_to_db()
         
+        role_count = db.session.query(Role).count()
+        if not (role_count>1):
+            print("Initialize Database")
 
-        admin_username = app.config['ADMIN']['username']
-        user = User.query.filter_by(username=admin_username).first()
-        if user: user.delete_from_db()
-        admin_user = User(id = 0, **app.config['ADMIN'])
-        admin_user.add_to_db()
-        
-        assign = RolesUsers.query.filter_by(user_id=0,role_id=2).first()
-        if assign: assign.delete_from_db()
-        RolesUsers(id=0,user_id=admin_user.id,role_id=adminRole.id).add_to_db()
+            defaultRole = Role(id=0, name='default')
+            defaultRole.add_to_db()
 
+            memberRole = Role(id=1,name='member')
+            memberRole.add_to_db()
 
+            adminRole = Role(id=2,name='admin')
+            adminRole.add_to_db()
+
+            User(id = 0, username=app.config['ADMIN_USERNAME'], email=app.config['ADMIN_EMAIL'], password='qweqweqwe').add_to_db()
+            # app.config['ADMIN_PASSWORD']
+            RolesUsers(id=0,user_id=0,role_id=adminRole.id).add_to_db()
 
     @app.teardown_request
     def shutdown_session(exception=None):

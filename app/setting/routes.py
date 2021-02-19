@@ -7,7 +7,7 @@ from ..base.models import User
 @blueprint.route('/add_user', methods=['GET', 'POST'])
 @login_required
 def add_User():
-    admin_user = current_app.config['ADMIN']['username']
+    admin_user = current_app.config['ADMIN_USERNAME']
     if current_user.username == admin_user: 
         form = add_user_Form(request.form)
         if 'Add' in request.form:
@@ -27,7 +27,7 @@ def add_User():
 @blueprint.route('/delete_user', methods=['GET', 'POST'])
 @login_required
 def delete_user():    
-    admin_user = current_app.config['ADMIN']['username']
+    admin_user = current_app.config['ADMIN_USERNAME']
     if current_user.username == admin_user:  
         form = delete_user_Form(request.form)
         if 'Delete' in request.form:
@@ -48,7 +48,7 @@ def delete_user():
 @blueprint.route('/setting_password', methods=['GET', 'POST'])
 @login_required
 def setting_password():
-    admin_user = current_app.config['ADMIN']['username']
+    admin_user = current_app.config['ADMIN_USERNAME']
     if current_user.username == admin_user:  
         form = setting_password_Form(request.form)
         if 'Setting' in request.form:
@@ -70,7 +70,7 @@ def setting_password():
 @blueprint.route('/change_password', methods=['GET', 'POST'])
 @login_required
 def change_password():
-    admin_user = current_app.config['ADMIN']['username']
+    admin_user = current_app.config['ADMIN_USERNAME']
     if current_user.username == admin_user:  
         return 'please change admin password from server'
     else:

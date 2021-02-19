@@ -11,7 +11,7 @@ class User(db.Model, UserMixin):
 
     id = Column(Integer, primary_key=True)
     username = Column(String(255), unique=True)
-    email = Column(String(255), unique=True)
+    email = Column(String, unique=True)
     password = Column(Binary)
     roles = relationship('Role', secondary='roles_users',
                          backref=backref('users', lazy='dynamic'))
