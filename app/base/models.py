@@ -1,18 +1,20 @@
 from bcrypt import gensalt, hashpw, checkpw
-from flask_login import UserMixin
-from sqlalchemy import Binary, Column, Integer, String
-
+from flask_security import UserMixin, RoleMixin
+from sqlalchemy import Binary, Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy.orm import relationship, backref
 from app import db, login_manager
 
 
 class User(db.Model, UserMixin):
 
-    __tablename__ = 'User'
+    __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
-    username = Column(String, unique=True)
-    email = Column(String, unique=True)
+    username = Column(String(255), unique=True)
+    email = Column(String(255), unique=True)
     password = Column(Binary)
+    roles = relationship('Role', secondary='roles_users',
+                         backref=backref('users', lazy='dynamic'))
 
     def __init__(self, **kwargs):
         for property, value in kwargs.items():
@@ -45,6 +47,41 @@ class User(db.Model, UserMixin):
 
     def checkpw(self, password):
         return checkpw(password.encode('utf8'), self.password)
+
+
+class RolesUsers(db.Model):
+    __tablename__ = 'roles_users'
+    id = Column(Integer(), primary_key=True)
+    user_id = Column('user_id', Integer(), ForeignKey('user.id'))
+    role_id = Column('role_id', Integer(), ForeignKey('role.id'))
+
+    def add_to_db(self):
+        db.session.add(self)
+        self.db_commit()
+
+    def delete_from_db(self):
+        db.session.delete(self)
+        self.db_commit()
+    
+    def db_commit(self):
+        db.session.commit()
+
+class Role(db.Model, RoleMixin):
+    __tablename__ = 'role'
+    id = Column(Integer(), primary_key=True)
+    name = Column(String(80), unique=True)
+    
+    def add_to_db(self):
+        db.session.add(self)
+        self.db_commit()
+
+    def delete_from_db(self):
+        db.session.delete(self)
+        self.db_commit()
+
+    def db_commit(self):
+        db.session.commit()
+
 
 
 @login_manager.user_loader
