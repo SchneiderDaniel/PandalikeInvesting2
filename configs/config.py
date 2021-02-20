@@ -15,6 +15,8 @@ class Config(object):
     ADMIN_EMAIL = os.environ.get('ADMIN_MAIL')
     ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD')
     SECURITY_PASSWORD_SALT = os.environ.get('SECRET_KEY')
+    SECURITY_TRACKABLE = True
+    SECURITY_CONFIRMABLE = True
 
 class ProductionConfig(Config):
     DEBUG = False
