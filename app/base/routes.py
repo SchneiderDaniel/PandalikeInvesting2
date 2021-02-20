@@ -1,15 +1,6 @@
 from flask import jsonify, render_template, redirect, request, url_for
-from flask_login import (
-    current_user,
-    login_required,
-    login_user,
-    logout_user
-)
-
-from ..extensions import db, login_manager
 from . import blueprint
 from .forms import LoginForm, CreateAccountForm
-from .models import User
 
 
 @blueprint.route('/')
@@ -41,29 +32,29 @@ def route_errors(error):
 ## Login & Registration
 
 
-@blueprint.route('/login', methods=['GET', 'POST'])
-def login():
-    login_form = LoginForm(request.form)
-    if 'login' in request.form:
-        user = User.query.filter_by(username=request.form['username']).first()
-        if user:
-            if user.checkpw(request.form['password']):
-                login_user(user)
-                return redirect(url_for('home_blueprint.index'))
-            else:
-                status = 'Password Error !'
-        else:
-            status = "User doesn't exist !"
-        return render_template('login/login.html', login_form = login_form, status = status)
+# @blueprint.route('/login', methods=['GET', 'POST'])
+# def login():
+#     login_form = LoginForm(request.form)
+#     if 'login' in request.form:
+#         user = User.query.filter_by(username=request.form['username']).first()
+#         if user:
+#             if user.checkpw(request.form['password']):
+#                 login_user(user)
+#                 return redirect(url_for('home_blueprint.index'))
+#             else:
+#                 status = 'Password Error !'
+#         else:
+#             status = "User doesn't exist !"
+#         return render_template('login/login.html', login_form = login_form, status = status)
 
-    if current_user.is_authenticated:
-        return redirect(url_for('home_blueprint.index'))
-    return render_template('login/login.html', login_form = login_form, status = '')
+#     if current_user.is_authenticated:
+#         return redirect(url_for('home_blueprint.index'))
+#     return render_template('login/login.html', login_form = login_form, status = '')
    
-@blueprint.route('/logout')
-def logout():
-    logout_user()
-    return redirect(url_for('home_blueprint.index'))
+# @blueprint.route('/logout')
+# def logout():
+#     logout_user()
+#     return redirect(url_for('home_blueprint.index'))
 
 
 @blueprint.route('/shutdown')
@@ -77,9 +68,9 @@ def shutdown():
 ## Errors
 
 
-@login_manager.unauthorized_handler
-def unauthorized_handler():
-    return render_template('errors/page_403.html'), 403
+# @login_manager.unauthorized_handler
+# def unauthorized_handler():
+#     return render_template('errors/page_403.html'), 403
 
 
 @blueprint.errorhandler(403)

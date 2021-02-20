@@ -1,6 +1,6 @@
 from flask_migrate import Migrate
 from configs.config import config_dict
-from app import create_app, db
+from app import create_app
 import os
 import sys
 
@@ -12,7 +12,7 @@ except KeyError:
     sys.exit('Error: Invalid CONFIG_MODE environment variable entry.')
 
 app = create_app(config_mode)
-Migrate(app, db)
+# Migrate(app, db)
 
 if __name__ == "__main__":
-    app.run(port=5001, debug = True, threaded=True)
+    app.run(port=5001, debug = True, threaded=False)

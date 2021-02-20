@@ -6,7 +6,6 @@ Created on Fri Jan 25 22:34:51 2019
 """
 
 from datetime import datetime, timedelta
-from flask_login import current_user
 import dash_html_components as html
 import pandas as pd
 import uuid
@@ -32,7 +31,8 @@ def clean_Dir_Store():
         
 def apply_layout_with_auth(app, layout):
     def serve_layout():
-        if current_user and current_user.is_authenticated:
+        # if current_user and current_user.is_authenticated:
+        if True:
             session_id = str(uuid.uuid4())
             clean_Dir_Store()
             return html.Div([

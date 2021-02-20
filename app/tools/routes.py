@@ -1,6 +1,5 @@
 from . import blueprint
 from flask import render_template
-from flask_login import login_required
 from Dashapps import Dash_App1, Dash_App2
 
 @blueprint.route('/app1')

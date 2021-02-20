@@ -1,6 +1,5 @@
 from . import blueprint
 from flask import render_template,flash, redirect, url_for
-from flask_login import login_required, current_user
 from .forms import ContactForm
 from app.mail_util import sendEMailToAdmin
 
