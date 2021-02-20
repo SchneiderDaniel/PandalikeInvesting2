@@ -11,6 +11,7 @@ from os import path
 import logging
 from sqlalchemy.orm import scoped_session, sessionmaker
 from .database import db_session, init_db
+from flask_security import LoginForm, url_for_security
 
 
 def register_extensions(app):
@@ -41,6 +42,7 @@ def register_blueprints(app):
         app.register_blueprint(module.blueprint)
 
 
+
 def configure_database(app, user_datastore):
 
     @app.before_first_request
@@ -68,6 +70,13 @@ def configure_logs(app):
         app.logger.handlers = gunicorn_logger.handlers
         app.logger.setLevel(gunicorn_logger.level)
 
+def app_context(app):
+    @app.context_processor
+    def login_context():
+        return {
+            'url_for_security': url_for_security,
+            'login_user_form': LoginForm(),
+        }
 
 
 def create_app(config, selenium=False):
@@ -81,6 +90,8 @@ def create_app(config, selenium=False):
     configure_database(app,user_datastore)
     init_admin(app)
     configure_logs(app)
+    app_context(app)
+
     app = Dash_App1.Add_Dash(app)
     app = Dash_App2.Add_Dash(app)
     return app

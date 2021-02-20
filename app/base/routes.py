@@ -24,7 +24,6 @@ def terms():
     return render_template('terms.html')
 
 
-
 @blueprint.route('/page_<error>')
 def route_errors(error):
     return render_template('errors/page_{}.html'.format(error))

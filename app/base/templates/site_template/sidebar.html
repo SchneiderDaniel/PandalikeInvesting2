@@ -38,13 +38,7 @@
   <li>
       <a href="#settingsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-cogs"></i> Settings </a>
       <ul class="collapse list-unstyled" id="settingsSubmenu">
-        {% if Is_admin %}
-        <li><a href="/setting/add_user">Add User</a></li>
-        <li><a href="/setting/delete_user">Delete User</a></li>
-        <li><a href="/setting/setting_password">Setting User Password</a></li>
-      {% else %}
         <li><a href="/setting/change_password">Change Password</a></li>
-      {% endif %}
       </ul>
   </li>
   {% endif %}

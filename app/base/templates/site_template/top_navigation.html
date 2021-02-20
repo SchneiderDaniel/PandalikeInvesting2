@@ -18,8 +18,11 @@
                   <i class="fa fa-user"></i> Account
                 </button>
                 <div class="dropdown-menu dropdown-menu-lg-right">
-                  <button class="dropdown-item"  type="button"><a href="/logout">Log Out</a></button>
-                  <button class="dropdown-item" type="button"><a href="/login">Log In</a></button>
+                  {% if current_user.username %}
+                  <button class="dropdown-item"  type="button"><a href="{{ url_for_security('logout') }}">Log Out</a></button>
+                  {% else %}
+                  <button class="dropdown-item" type="button"><a href="{{ url_for_security('login') }}">Log In</a></button>
+                  {% endif %}
                 </div>
               </div>
 
