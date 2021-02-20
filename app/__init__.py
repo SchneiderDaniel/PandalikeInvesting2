@@ -14,26 +14,11 @@ from .database import db_session, init_db
 
 
 def register_extensions(app):
-    # db.init_app(app)
     mail.init_app(app)
-    
-    
-    
-    # db.Model = automap_base(db.Model)
-    # db_session = scoped_session(sessionmaker(autocommit=False,
-    #                                      autoflush=False,
-    #                                      bind=db))
-    # user_datastore = SQLAlchemySessionUserDatastore(db_session,User, Role)
-    # security.init_app(app,user_datastore)
-    # Base.query = db_session.query_property()
-    
 
 def setup_security(app):
-    # db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False,bind=db))
     user_datastore = SQLAlchemySessionUserDatastore(db_session,User, Role)
     security.init_app(app,user_datastore)
-    # Base.query = db_session.query_property()
-
     return user_datastore
 
 class MyAdminView(ModelView):
@@ -60,33 +45,20 @@ def configure_database(app, user_datastore):
 
     @app.before_first_request
     def initialize_database():
-        # db.drop_all()
-        # db.create_all()
         init_db()
 
         user_count = db_session.query(User).count()
         if user_count==0:
             print("Initialize Database")
 
-            # defaultRole = Role(id=0, name='default')
-            # defaultRole.add_to_db()
-
-            # memberRole = Role(id=1,name='member')
-            # memberRole.add_to_db()
-
-            # adminRole = Role(id=2,name='admin')
-            # adminRole.add_to_db()
-
-            # User(id = 0, username=app.config['ADMIN_USERNAME'], email=app.config['ADMIN_EMAIL'], password=app.config['ADMIN_PASSWORD']).add_to_db()
-            # RolesUsers(id=0,user_id=0,role_id=adminRole.id).add_to_db()
-
             user_datastore.create_role(name='default')
             user_datastore.create_role(name='member')
             user_datastore.create_role(name='admin')
             db_session.commit()
 
-            user_datastore.create_user(email=app.config['ADMIN_EMAIL'], password=app.config['ADMIN_PASSWORD'], roles=['admin'])
-            # user_datastore.create_user(email='matt@nobien.net', password='password',active=True)
+            user_datastore.create_user(email='test@testdefault.de', username='testdefault', password=app.config['ADMIN_PASSWORD'], roles=['default'])
+            user_datastore.create_user(email='test@testmember.de', username='testmember', password=app.config['ADMIN_PASSWORD'], roles=['member'])
+            user_datastore.create_user(email=app.config['ADMIN_EMAIL'],username=app.config['ADMIN_USERNAME'], password=app.config['ADMIN_PASSWORD'], roles=['admin'])
             db_session.commit()
 
 def configure_logs(app):
@@ -95,7 +67,6 @@ def configure_logs(app):
         gunicorn_logger = logging.getLogger("gunicorn.error")
         app.logger.handlers = gunicorn_logger.handlers
         app.logger.setLevel(gunicorn_logger.level)
-    # endif
 
 
 
