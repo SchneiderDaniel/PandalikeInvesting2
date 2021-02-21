@@ -1,5 +1,5 @@
 from flask import Flask, url_for
-from flask_security import SQLAlchemySessionUserDatastore
+from flask_security import SQLAlchemySessionUserDatastore, current_user
 from .extensions import mail, admin, security
 from flask_admin.menu import  MenuLink
 from flask_admin.contrib.sqla import ModelView
@@ -25,16 +25,13 @@ def setup_security(app):
 class MyAdminView(ModelView):
 
     def is_accessible(self):
-        # is_admin = current_user.is_authenticated and current_user.username == app.config['ADMIN_USERNAME']
-        # return is_admin
-        return True
+        return current_user.is_authenticated and current_user.has_role('admin')
 
 def init_admin(app):
     admin.init_app(app)
     admin.add_link(MenuLink(name='Go Back', category='', url='../'))
     admin.add_view(MyAdminView(User, db_session))
     admin.add_view(MyAdminView(Role, db_session))
-    admin.add_view(MyAdminView(RolesUsers, db_session))
 
 def register_blueprints(app):
     for module_name in ('base', 'home', 'tools', 'contact'):
