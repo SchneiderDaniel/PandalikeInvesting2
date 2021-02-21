@@ -8,19 +8,19 @@ def route_default():
 
 @blueprint.route('/about')
 def about():
-    return render_template('about.html')
+    return render_template('site_info/about.html')
 
 @blueprint.route('/legal')
 def legal():
-    return render_template('legal.html')
+    return render_template('site_info/legal.html')
 
 @blueprint.route('/privacy')
 def privacy():
-    return render_template('privacy.html')
+    return render_template('site_info/privacy.html')
 
 @blueprint.route('/terms')
 def terms():
-    return render_template('terms.html')
+    return render_template('site_info/terms.html')
 
 
 @blueprint.route('/page_<error>')
