@@ -28,34 +28,6 @@ def terms():
 def route_errors(error):
     return render_template('errors/page_{}.html'.format(error))
 
-## Login & Registration
-
-
-# @blueprint.route('/login', methods=['GET', 'POST'])
-# def login():
-#     login_form = LoginForm(request.form)
-#     if 'login' in request.form:
-#         user = User.query.filter_by(username=request.form['username']).first()
-#         if user:
-#             if user.checkpw(request.form['password']):
-#                 login_user(user)
-#                 return redirect(url_for('home_blueprint.index'))
-#             else:
-#                 status = 'Password Error !'
-#         else:
-#             status = "User doesn't exist !"
-#         return render_template('login/login.html', login_form = login_form, status = status)
-
-#     if current_user.is_authenticated:
-#         return redirect(url_for('home_blueprint.index'))
-#     return render_template('login/login.html', login_form = login_form, status = '')
-   
-# @blueprint.route('/logout')
-# def logout():
-#     logout_user()
-#     return redirect(url_for('home_blueprint.index'))
-
-
 @blueprint.route('/shutdown')
 def shutdown():
     func = request.environ.get('werkzeug.server.shutdown')

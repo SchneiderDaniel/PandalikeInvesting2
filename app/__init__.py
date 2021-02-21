@@ -75,7 +75,7 @@ def app_context(app):
     def login_context():
         return {
             'url_for_security': url_for_security,
-            'login_user_form': LoginForm(),
+            # 'login_user_form': LoginForm(),
         }
 
 

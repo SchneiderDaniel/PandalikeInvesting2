@@ -17,6 +17,10 @@ class Config(object):
     SECURITY_PASSWORD_SALT = os.environ.get('SECRET_KEY')
     SECURITY_TRACKABLE = True
     SECURITY_CONFIRMABLE = True
+    SECURITY_REGISTERABLE = True
+    SECURITY_CHANGEABLE = True
+    SECURITY_RECOVERABLE = True
+    SECURITY_URL_PREFIX = '/security' 
 
 class ProductionConfig(Config):
     DEBUG = False

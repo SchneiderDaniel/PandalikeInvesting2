@@ -34,12 +34,14 @@
       </ul>
   </li>
   
-  {% if current_user.username %}
+  {% if current_user.is_authenticated %}
   <li>
       <a href="#settingsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-cogs"></i> Settings </a>
       <ul class="collapse list-unstyled" id="settingsSubmenu">
-        <li><a href=" {{ url_for_security('login') }} ">Change Password</a></li>
-        <li><a href=" {{ url_for_security('login') }} ">Reset Password</a></li>
+        <li><a href=" {{ url_for_security('change_password') }} ">Change Password</a></li>
+        {% if current_user.has_role('admin') %}
+        <li><a href="/admin">Admin</a></li>
+        {% endif %}
       </ul>
   </li>
   {% endif %}
