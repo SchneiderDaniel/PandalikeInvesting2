@@ -1,39 +1,5 @@
 {% extends "base_site.html" %}
-
-
-{% macro render_field(field) %}
-<div class="form-group">
-  {{ field.label(class="form-label-txt") }}
-  {{ field(**kwargs)|safe }}
-  {% if field.errors %}
-  <ul class=errors>
-    {% for error in field.errors %}
-    <div class="alert alert-danger" role="alert">
-      {{ error }}
-    </div>
-
-    {% endfor %}
-  </ul>
-  {% endif %}
-</div>
-{% endmacro %}
-
-{% macro render_recaptcha(field) %}
-<div class="form-group">
-  {{ field }}
-  {% if field.errors %}
-  <ul class=errors>
-    {% for error in field.errors %}
-    <div class="alert alert-danger" role="alert">
-      {{ error }}
-    </div>
-    {% endfor %}
-  </ul>
-  {% endif %}
-
-</div>
-{% endmacro %}
-
+{% from "security/_macros.html" import render_field_with_errors, render_field, render_field_errors, render_recaptcha %}
 
 {% block title %} Contact {% endblock title %}
 
@@ -42,36 +8,24 @@
 {% endblock stylesheets %}
 
 {% block content %}
-<br>
-<div class="container">
 
-  <div class="form-group">
-    <div class="content-section">
-      <br>
-      <legend class="border-bottom mb-4">Contact Us</legend>
+{% include "security/_messages.html" %}
+<h1>{{ _fsdomain('Contact Us') }}</h1>
+<form action="{{ url_for('contact_blueprint.index') }}" method="POST" name="contact_form">
+{{ contact_form.hidden_tag() }}
+{{ render_field_with_errors(contact_form.name, class='form-control', placeholder='What is your name?') }}
+{{ render_field_with_errors(contact_form.email, class='form-control', placeholder='Enter your E-Mail') }}
+{{ render_field_with_errors(contact_form.body, class='form-control', placeholder='Enter your message, question or request') }}
+{{ render_recaptcha(contact_form.recaptcha)}}
+{{ render_field_errors(contact_form.csrf_token) }}
 
-      <form method="POST" action="{{ url_for( 'contact_blueprint.index') }}" class="contact_form" role="contact_form">
 
-        {{ contact_form.hidden_tag() }}
-        <d1>
-          {{ render_field(contact_form.name, class='form-control', placeholder='What is your name?') }}
+{{ render_field(contact_form.submit, class="btn btn-outline-info")}}
+</form>
 
-          {{ render_field(contact_form.email, class='form-control', placeholder='Enter your E-Mail') }}
 
-          {{ render_field(contact_form.body, class='form-control', placeholder='Enter your message, question or request') }}
-        </d1>
 
-        {{render_recaptcha(contact_form.recaptcha)}}
 
-        <br>
-
-        <!-- <input type=submit name="submit" value="Send" class='btn btn-warning btn-block'> -->
-        <div class="form-group">
-          {{ contact_form.submit(class="btn btn-outline-info") }}
-        </div>
-    </div>
-  </div>
-</div>
 {% endblock content %}
 
 {% block javascripts %}
