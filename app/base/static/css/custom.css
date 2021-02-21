@@ -135,12 +135,14 @@ ul li {
 } */
 
 .dropdown-toggle::after {
-    display: block;
-    position: absolute;
-    top: 50%;
+    /* display: block; */
+    /* position: relative; */
+    /* top: 50%;
     right: 20px;
     left:auto;
-    transform: translateY(-50%);
+    transform: translateY(-50%); */
+
+    float:right;
 }
 
 /* ul ul a {

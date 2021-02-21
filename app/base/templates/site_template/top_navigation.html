@@ -6,29 +6,17 @@
           <span></span>
           <span></span>
       </button>
-      <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <!-- <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <i class="fas fa-align-justify"></i>
-      </button>
+      </button> -->
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="nav navbar-nav ml-auto">
-             
-              <div class="btn-group">
-                <button type="button" class="btn btn-secondary" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
-                  <i class="fa fa-user"></i> Account
-                </button>
-                <div class="dropdown-menu dropdown-menu-lg-right">
-                  {% if current_user.is_authenticated %}
-                  <button class="dropdown-item"  type="button"><a href="{{ url_for_security('logout') }}">Log Out</a></button>
-                  {% else %}
-                  <button class="dropdown-item" type="button"><a href="{{ url_for_security('register') }}">Register</a></button>
-                  <button class="dropdown-item" type="button"><a href="{{ url_for_security('login') }}">Log In</a></button>
-                  {% endif %}
-                </div>
-              </div>
-
-
-          </ul>
+      <div class="navbar-nav ml-auto">
+        {% if current_user.is_authenticated %}
+        <button class="dropdown-item"  type="button"><a href="{{ url_for_security('logout') }}">Logout</a></button>
+        {% else %}
+        <button class="dropdown-item" type="button"><a href="{{ url_for_security('register') }}">Register</a></button>
+        <button class="dropdown-item" type="button"><a href="{{ url_for_security('login') }}">Login</a></button>
+        {% endif %}
       </div>
   </div>
 </nav>
