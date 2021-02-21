@@ -5,6 +5,7 @@ from dash.dependencies import Input, State, Output
 from .Dash_fun import apply_layout_with_auth, load_object, save_object
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_bootstrap_components as dbc
 
 url_base = '/dash/app1/'
 
@@ -12,49 +13,40 @@ import plotly.graph_objs as go
 fig = go.Figure(data=[go.Scatter(x=[1, 2, 3], y=[4, 1, 2])])
 
 
-layout = html.Div( [
+layout = html.Div([
 
+    #First row
     html.Div([
-        html.Label('Dropdown'), html.Br(), html.Br(),
-        dcc.Dropdown(
-            options=[
-                {'label': 'BR206', 'value': 'C'},
-                {'label': u'BR177', 'value': 'A'},
-                {'label': 'BR213', 'value': 'E'}
-            ],
-            value='MTL'
-        ), 
-        dcc.Graph(
-            id='example-graph',
-            figure={
-                'data': [
-                    {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
-                    {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': u'Montréal'},
-                ],
-                'layout': {
-                    'title': 'Dash Data Visualization'
-                }
-            }
-        )
-    ]),
-    html.Div([
-        html.Br(), html.Label('Checkboxes'), html.Br(), html.Br(),
-        dcc.Checklist(
-            options=[
-                {'label': 'BR206', 'value': 'C'},
-                {'label': u'BR177', 'value': 'A'},
-                {'label': 'BR213', 'value': 'E'}
-            ],
-            value=['MTL', 'SF']
-        ),
-        
-        html.Br(),
-        dcc.Graph(
-            id='example-graph-2',
-            figure=fig
-        )
-    ])
-], style={'font-family':'"Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif'})
+        #Description
+        html.Div([
+            html.H3('Description'),
+            dcc.Graph(id='g1', figure={'data': [{'y': [1, 2, 3]}]})
+        ], className="six columns"),
+
+        #Parameters
+        html.Div([
+            html.H3('Parameters'),
+            dcc.Graph(id='g2', figure={'data': [{'y': [1, 2, 3]}]})
+        ], className="six columns"),
+    ], className="row"),
+
+    #Result
+        html.Div([
+            html.H3('Result'),
+            dcc.Graph(id='g3', figure={'data': [{'y': [1, 2, 3]}]})
+        ], className="twelve columns"),
+
+
+], style={'font-family':'"Poppins", sans-serif'})
+
+# layout = html.Div(className='row', children=[
+#     html.H1("Tips database analysis (First dashboard)"),
+#     dcc.Dropdown(),
+#     html.Div(children=[
+#         dcc.Graph(id="graph1", style={'display': 'inline-block'}),
+#         dcc.Graph(id="graph2", style={'display': 'inline-block'})
+#     ])
+# ])
 
 #font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
 
