@@ -20,7 +20,7 @@ class Config(object):
     SECURITY_REGISTERABLE = True
     SECURITY_CHANGEABLE = True
     SECURITY_RECOVERABLE = True
-    SECURITY_URL_PREFIX = '/security' 
+    SECURITY_URL_PREFIX = '/security'
 
 class ProductionConfig(Config):
     DEBUG = False
