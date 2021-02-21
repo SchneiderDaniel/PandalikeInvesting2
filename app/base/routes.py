@@ -1,6 +1,5 @@
 from flask import jsonify, render_template, redirect, request, url_for
 from . import blueprint
-from .forms import LoginForm, CreateAccountForm
 
 
 @blueprint.route('/')

@@ -10,6 +10,7 @@ def app1_template():
     return render_template('app1.html', dash_url = Dash_App1.url_base)
 
 @blueprint.route('/app2')
+@login_required
 @roles_accepted('admin')
 def app2_template():
     return render_template('app2.html', dash_url = Dash_App2.url_base)

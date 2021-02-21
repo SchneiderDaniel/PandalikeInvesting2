@@ -9,7 +9,6 @@
 
 {% block content %}
 
-{% include "security/_messages.html" %}
 <h1>{{ _fsdomain('Contact Us') }}</h1>
 <form action="{{ url_for('contact_blueprint.index') }}" method="POST" name="contact_form">
 {{ contact_form.hidden_tag() }}
