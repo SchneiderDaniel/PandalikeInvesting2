@@ -126,7 +126,7 @@ ul li {
 
 #sidebar ul li.active > a, a[aria-expanded="true"] {
     color: #fff;
-    background: #565969;
+    background: #00b0f0;
 }
 
 
