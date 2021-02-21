@@ -40,8 +40,6 @@ def register_blueprints(app):
         module = import_module('app.{}.routes'.format(module_name))
         app.register_blueprint(module.blueprint)
 
-
-
 def configure_database(app, user_datastore):
 
     @app.before_first_request
@@ -106,7 +104,6 @@ def create_app(config, selenium=False):
     init_admin(app)
     configure_logs(app)
     app_context(app)
-
     app = Dash_App1.Add_Dash(app)
     app = Dash_App2.Add_Dash(app)
     return app
