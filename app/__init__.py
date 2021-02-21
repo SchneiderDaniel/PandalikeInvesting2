@@ -1,4 +1,4 @@
-from flask import Flask, url_for
+from flask import Flask, url_for, request
 from flask_security import SQLAlchemySessionUserDatastore, current_user
 from .extensions import mail, admin, security
 from flask_admin.menu import  MenuLink
@@ -76,6 +76,16 @@ def app_context(app):
             'url_for_security': url_for_security,
             # 'login_user_form': LoginForm(),
         }
+    @app.context_processor
+    def inject_template_scope():
+        injections = dict()
+
+        def cookies_check():
+            value = request.cookies.get('cookie_consent')
+            return value == 'true'
+        injections.update(cookies_check=cookies_check)
+
+        return injections
 
 
 def create_app(config, selenium=False):
