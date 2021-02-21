@@ -13,7 +13,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from .database import db_session, init_db
 from flask_security import LoginForm, url_for_security
 from flask_security.utils import  encrypt_password
-import datetime
+from datetime import datetime
 
 
 def register_extensions(app):
@@ -70,12 +70,14 @@ def configure_logs(app):
         app.logger.setLevel(gunicorn_logger.level)
 
 def app_context(app):
+
     @app.context_processor
     def login_context():
         return {
             'url_for_security': url_for_security,
             # 'login_user_form': LoginForm(),
         }
+
     @app.context_processor
     def inject_template_scope():
         injections = dict()
@@ -86,6 +88,12 @@ def app_context(app):
         injections.update(cookies_check=cookies_check)
 
         return injections
+
+    @app.context_processor
+    def year():
+        current_year = datetime.now().year
+        return dict(current_year = current_year) 
+    
 
 
 def create_app(config, selenium=False):
