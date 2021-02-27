@@ -12,171 +12,99 @@ import dash_bootstrap_components as dbc
 import plotly.graph_objs as go
 import numpy as np
 import pandas as pd
+from .dash_base import warning_card, colors
 
 url_base = '/dash/app2/'
 
-# define figure creation function
-def create_figure():
-    N = 100
-    x_min = 0
-    x_max = 10
-    y_min = 0
-    y_max = 10
+#https://stackoverflow.com/questions/52905569/dynamic-list-of-python-dash-core-components
 
-    blue = '#6683f3'
-    orange = '#ff9266'
-    grey = '#e0e1f5'
-    black = '#212121'
 
-    x = np.linspace(x_min, x_max, N)
-    y = np.linspace(y_min, y_max, N)
-    XX, YY = np.meshgrid(x, y)
+df2 = pd.read_csv('./app/base/static/testdata/solar.csv')
 
-    Z1 = XX*2*YY/10
-    Z2 = np.sin(XX)*YY**2
 
-    data = [go.Contour(z = Z1,
-                       name = 'Z1',
-                       contours_coloring = 'lines',
-                       line_width = 2,
-                       showscale = False,
-                       showlegend = True,
-                       colorscale = [[0, blue], [1, blue]],
-                       ncontours = 11,
-                       contours = dict(showlabels = True,
-                                       labelformat = '.0f')),
-
-            go.Contour(z = Z2,
-                       name = 'Z2',
-                       contours_coloring = 'lines',
-                       line_width = 2,
-                       showscale = False,
-                       showlegend = True,
-                       colorscale = [[0, orange], [1, orange]],
-                       ncontours = 21,
-                       contours = dict(showlabels = True,
-                                       labelformat = '.0f'))]
-
-    layout = go.Layout(plot_bgcolor = black,
-                       hovermode = 'x unified')
-
-    figure = go.Figure(data = data, layout = layout)
-
-    figure.update_xaxes(title_text = 'X',
-                        linewidth = 1,
-                        nticks = 11,
-                        gridwidth = 0.5,
-                        gridcolor = grey,
-                        tickformat = '.0f')
-
-    figure.update_yaxes(title_text = 'Y',
-                        linewidth = 1,
-                        nticks = 11,
-                        gridwidth = 0.5,
-                        gridcolor = grey,
-                        tickformat = '.0f')
-
-    figure.update_layout(legend = dict(itemsizing = 'constant'), margin = dict(t=0, b=0, l=0, r=0))
-
-    return figure
-
-# define dataframe creation function
-def create_dataframe():
-    rows = 6
-    df = pd.DataFrame(columns = list('ABCDEFGHIJ'))
-    data = np.random.random(size = (rows, len(df.columns)))
-
-    for line in data:
-        df = df.append(dict(zip(df.columns, line)), ignore_index=True)
-
-    return df
+def step():
+     return html.Div(
+        children=[
+            dbc.Row(
+                [
+                    dbc.Col( 
+                        children=[
+                            html.Div("Ticker:"),
+                            dbc.Input(type="text", placeholder="Enter a ticker symbol",id=str(np.random.randn()))
+                        ]
+                    ),
+                    dbc.Col( 
+                        children=[
+                            html.Div("Percent:"),
+                            dbc.Input(type="number", placeholder="Enter percentage (%)",id=str(np.random.randn()))
+                        ]
+                    )
+                ]
+            ),
+    ])
 
 def description_card():
-    """
-    :return: A Div containing dashboard title & descriptions.
-    """
     return html.Div(
         id="description-card",
-        children=[
-            html.H5("Clinical Analytics"),
-            html.H3("Welcome to the Clinical Analytics Dashboard"),
-            html.Div(
-                id="intro",
-                children="Explore clinic patient volume by time of day, waiting time, and care score. Click on the heatmap to visualize patient experience at different time points.",
-            ),
-        ],
+        children="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
     )
 
+def ticker_card():
+
+    return html.Div(
+        children=[
+            html.H3(children='Portfolio'),
+            html.Div(children=[step()], id='step_list'),
+            html.Br(),
+            html.Button('Add Ticker', id='add_step_button', n_clicks_timestamp='0'),
+            html.Button('Remove Ticker', id='remove_step_button', n_clicks_timestamp='0')])
 
 
-# call figure and dataframe functions
-figure = create_figure()
-df = create_dataframe()
 
-
-
-layout = html.Div([
-
-    # first row
-    html.Div(children=[
-
-        # first column of first row
-        html.Div(children=[
-
-            dcc.RadioItems(id = 'radio-item-1',
-                           options = [dict(label = 'option A', value = 'A'),
-                                      dict(label = 'option B', value = 'B'),
-                                      dict(label = 'option C', value = 'C')],
-                            value = 'A',
-                            labelStyle={'display': 'block'}),
-
-            html.P(id = 'text-1',
-                   children = 'First paragraph'),
-
-        ], style={'display': 'inline-block', 'vertical-align': 'top', 'margin-left': '3vw', 'margin-top': '3vw'}),
-
-        # second column of first row
-        html.Div(children=[
-
-            dcc.RadioItems(id = 'radio-item-2',
-                       options = [dict(label = 'option 1', value = '1'),
-                                  dict(label = 'option 2', value = '2'),
-                                  dict(label = 'option 3', value = '3')],
-                       value = '1',
-                       labelStyle={'display': 'block'}),
-
-            html.P(id='text-2',
-                   children='Second paragraph'),
-
-        ], style={'display': 'inline-block', 'vertical-align': 'top', 'margin-left': '3vw', 'margin-top': '3vw'}),
-
-        # third column of first row
-        html.Div(children=[
-
-            html.Div(dcc.Graph(id = 'main-graph',
-                               figure = figure)),
-
-        ], style={'display': 'inline-block', 'vertical-align': 'top', 'margin-left': '3vw', 'margin-top': '3vw'}),
-
-    ], className='row'),
-
-    # second row
-    html.Div(children=[
-
-        html.Div(dash_table.DataTable(id = 'main-table',
-                                      columns = [{"name": i, "id": i} for i in df.columns],
-                                      data = df.to_dict('records'),
-                                      style_table={'margin-left': '3vw', 'margin-top': '3vw'})),
-
-    ], className='row'),
-
+# The Layout
+layout = html.Div(style={'font-family':'"Poppins", sans-serif'}, children=[
+    html.H1(
+        children='Correlation Matrix',
+        style={
+            'textAlign': 'center',
+            'color': colors['text']
+        }
+    ),
+    html.Div(children=description_card(), style={
+        'textAlign': 'center',
+        'color': colors['text']
+    }),
+    html.Br(),
+    ticker_card(),
+    html.Br(),
+    dash_table.DataTable(
+        style_data_conditional=[
+            {
+                'if': {'row_index': 'odd'},
+                'backgroundColor': 'rgb(248, 248, 248)'
+            },
+            {
+               'if': {'column_id': 'State'},
+               'backgroundColor': 'rgb(230, 230, 230)' 
+            }
+        ],
+        style_header={
+            'backgroundColor': 'rgb(230, 230, 230)',
+            # 'fontWeight': 'bold'
+        },
+        style_cell={
+            'font-family':'"Poppins", sans-serif'
+        },
+        id='table',
+        columns=[{"name": i, "id": i} for i in df2.columns],
+        data=df2.to_dict('records'),
+    ),
+    html.Br(),
+    html.Div(children=warning_card(), style={
+        'textAlign': 'left',
+        'color': colors['text']
+    })
 ])
-
-
-
-
-
-
 
 
 
@@ -186,9 +114,17 @@ def Add_Dash(server):
     apply_layout_without_auth(app, layout)
 
     @app.callback(
-            Output('target', 'children'),
-            [Input('input_ticker', 'value')])
-    def callback_fun(value):
-        return 'your input is {}'.format(value)
+        dash.dependencies.Output('step_list', 'children'),
+        [dash.dependencies.Input('add_step_button', 'n_clicks_timestamp'),
+        dash.dependencies.Input('remove_step_button', 'n_clicks_timestamp')],
+        [dash.dependencies.State('step_list', 'children')])
+    def add_step(add_ts, remove_ts, div_list):
+        add_ts = int(add_ts)
+        remove_ts = int(remove_ts)
+        if add_ts > 0 and add_ts > remove_ts:
+            div_list += [step()]
+        if len(div_list) > 1 and remove_ts > add_ts:
+            div_list = div_list[:-1]
+        return div_list
 
     return app.server

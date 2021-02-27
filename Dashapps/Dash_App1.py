@@ -80,6 +80,7 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif'}, children=[
         columns=[{"name": i, "id": i} for i in df2.columns],
         data=df2.to_dict('records'),
     ),
+    html.Br(),
     html.Div(children=warning_card(), style={
         'textAlign': 'left',
         'color': colors['text']
@@ -88,13 +89,13 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif'}, children=[
 
 
 def Add_Dash(server):
-    app = Dash(server=server, url_base_pathname=url_base)
+    app = Dash(server=server, url_base_pathname=url_base, external_stylesheets = [dbc.themes.BOOTSTRAP], meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}])
     apply_layout_with_auth(app, layout)
 
-    @app.callback(
-            Output('target', 'children'),
-            [Input('input_text', 'value')])
-    def callback_fun(value):
-        return 'your input is {}'.format(value)
+    # @app.callback(
+    #         Output('target', 'children'),
+    #         [Input('input_text', 'value')])
+    # def callback_fun(value):
+    #     return 'your input is {}'.format(value)
     
     return app.server
