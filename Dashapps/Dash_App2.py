@@ -16,8 +16,6 @@ from .dash_base import warning_card, colors
 
 url_base = '/dash/app2/'
 
-#https://stackoverflow.com/questions/52905569/dynamic-list-of-python-dash-core-components
-
 
 df2 = pd.read_csv('./app/base/static/testdata/solar.csv')
 
@@ -31,16 +29,20 @@ def step():
                         children=[
                             html.Div("Ticker:"),
                             dbc.Input(type="text", placeholder="Enter a ticker symbol",id=str(np.random.randn()))
-                        ]
+                        ],
+                        width=6
                     ),
                     dbc.Col( 
                         children=[
                             html.Div("Percent:"),
-                            dbc.Input(type="number", placeholder="Enter percentage (%)",id=str(np.random.randn()))
-                        ]
+                            dbc.Input(type="number", placeholder="Enter %",id=str(np.random.randn()))
+                        ],
+                        width="3"
                     )
-                ]
+                ],
+                style = { 'width': '80%'}
             ),
+            html.Br(),
     ])
 
 def description_card():
@@ -55,7 +57,6 @@ def ticker_card():
         children=[
             html.H3(children='Portfolio'),
             html.Div(children=[step()], id='step_list'),
-            html.Br(),
             dbc.Button('Add Ticker', color="secondary", id='add_step_button', n_clicks_timestamp='0', className="mr-1"),
             dbc.Button('Remove Ticker', color="secondary", id='remove_step_button', n_clicks_timestamp='0', className="mr-1")
             ]

@@ -63,6 +63,6 @@ You need to set the following env. variables.
 ## Docu
 [Flask Security](https://flask-security-too.readthedocs.io/en/stable/)
 [Dash](https://dash.plotly.com/)
-
-
+[Dash Bootstrap Components](https://dash-bootstrap-components.opensource.faculty.ai/docs/components/alert/)
+[Dynamic List Example](https://stackoverflow.com/questions/52905569/dynamic-list-of-python-dash-core-components)
 
