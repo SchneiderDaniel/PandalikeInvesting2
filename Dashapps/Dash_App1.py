@@ -59,6 +59,23 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif'}, children=[
     ),
     html.Br(),
     dash_table.DataTable(
+        style_data_conditional=[
+            {
+                'if': {'row_index': 'odd'},
+                'backgroundColor': 'rgb(248, 248, 248)'
+            },
+            {
+               'if': {'column_id': 'State'},
+               'backgroundColor': 'rgb(230, 230, 230)' 
+            }
+        ],
+        style_header={
+            'backgroundColor': 'rgb(230, 230, 230)',
+            # 'fontWeight': 'bold'
+        },
+        style_cell={
+            'font-family':'"Poppins", sans-serif'
+        },
         id='table',
         columns=[{"name": i, "id": i} for i in df2.columns],
         data=df2.to_dict('records'),
