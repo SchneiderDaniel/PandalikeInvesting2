@@ -28,7 +28,7 @@ def step():
                     dbc.Col( 
                         children=[
                             html.Div("Ticker:"),
-                            dbc.Input(type="text", placeholder="Enter a ticker symbol",id=str(np.random.randn()))
+                            dbc.Input(type="text", placeholder="Enter a ticker",id=str(np.random.randn()))
                         ],
                         width=6
                     ),
@@ -37,7 +37,7 @@ def step():
                             html.Div("Percent:"),
                             dbc.Input(type="number", placeholder="Enter %",id=str(np.random.randn()))
                         ],
-                        width="3"
+                        width=4
                     )
                 ],
                 style = { 'width': '80%'}
@@ -49,7 +49,9 @@ def description_card():
     return html.Div(
         id="description-card",
         children="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-    )
+    style={
+        'backgroundColor': colors['background'],
+    })
 
 def ticker_card():
 
@@ -59,26 +61,33 @@ def ticker_card():
             html.Div(children=[step()], id='step_list'),
             dbc.Button('Add Ticker', color="secondary", id='add_step_button', n_clicks_timestamp='0', className="mr-1"),
             dbc.Button('Remove Ticker', color="secondary", id='remove_step_button', n_clicks_timestamp='0', className="mr-1")
-            ]
+            ],
+        style={
+        'backgroundColor': colors['background'],
+        }
     )
 
 
 
 # The Layout
-layout = html.Div(style={'font-family':'"Poppins", sans-serif'}, children=[
+layout = html.Div(style={'backgroundColor': colors['background'],'font-family':'"Poppins", sans-serif'}, children=[
     html.H1(
         children='Correlation Matrix',
         style={
             'textAlign': 'center',
-            'color': colors['text']
+            'color': colors['text'],
+            'backgroundColor': colors['background']
         }
     ),
     html.Div(children=description_card(), style={
         'textAlign': 'center',
-        'color': colors['text']
+        'color': colors['text'],
+        'backgroundColor': colors['background']
     }),
     html.Br(),
     ticker_card(),
+    html.Br(),
+    dbc.Button("Compute", color="primary", block=True),
     html.Br(),
     dash_table.DataTable(
         style_data_conditional=[
@@ -105,7 +114,8 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif'}, children=[
     html.Br(),
     html.Div(children=warning_card(), style={
         'textAlign': 'left',
-        'color': colors['text']
+        'color': colors['text'],
+        'backgroundColor': colors['background']
     })
 ])
 
