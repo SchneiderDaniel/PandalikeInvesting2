@@ -19,23 +19,27 @@ url_base = '/dash/app2/'
 
 df2 = pd.read_csv('./app/base/static/testdata/solar.csv')
 
+list_id_tickier =  []
+list_id_percent = []
 
 def step():
-     return html.Div(
+    id_ticker = str(np.random.randn())
+    id_percent = str(np.random.randn())
+    return html.Div(
         children=[
             dbc.Row(
                 [
                     dbc.Col( 
                         children=[
                             html.Div("Ticker:"),
-                            dbc.Input(type="text", placeholder="Enter a ticker",id=str(np.random.randn()))
+                            dbc.Input(type="text", placeholder="Enter a ticker",id=id_ticker)
                         ],
                         width=6
                     ),
                     dbc.Col( 
                         children=[
                             html.Div("Percent:"),
-                            dbc.Input(type="number", placeholder="Enter %",id=str(np.random.randn()))
+                            dbc.Input(type="number", placeholder="Enter %",id=id_percent)
                         ],
                         width=4
                     )
@@ -70,7 +74,7 @@ def ticker_card():
 
 
 # The Layout
-layout = html.Div(style={'backgroundColor': colors['background'],'font-family':'"Poppins", sans-serif'}, children=[
+layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor': colors['background']}, children=[
     html.H1(
         children='Correlation Matrix',
         style={
@@ -87,7 +91,8 @@ layout = html.Div(style={'backgroundColor': colors['background'],'font-family':'
     html.Br(),
     ticker_card(),
     html.Br(),
-    dbc.Button("Compute", color="primary", block=True),
+    dbc.Button("Compute", id="compute-button", color="primary", block=True),
+    html.Span(id="compute-output", style={"vertical-align": "middle"}),
     html.Br(),
     dash_table.DataTable(
         style_data_conditional=[
@@ -139,5 +144,14 @@ def Add_Dash(server):
         if len(div_list) > 1 and remove_ts > add_ts:
             div_list = div_list[:-1]
         return div_list
+
+
+    @app.callback(
+    Output("compute-output", "children"), [Input("compute-button", "n_clicks")])
+    def on_button_click(n):
+        if n is None:
+            return "Not clicked."
+        else:
+            return f"Clicked {n} times."
 
     return app.server
