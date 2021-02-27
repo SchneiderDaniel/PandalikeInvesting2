@@ -10,6 +10,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objs as go
 from .dash_base import warning_card, colors
+import dash_table
 
 url_base = '/dash/app1/'
 
@@ -18,6 +19,11 @@ df = pd.DataFrame({
     "Amount": [4, 1, 2, 2, 4, 5],
     "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
 })
+
+
+df2 = pd.read_csv('./app/base/static/testdata/solar.csv')
+
+
 
 fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
 
@@ -47,19 +53,20 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif'}, children=[
         'color': colors['text']
     }),
     html.Br(),
-
     dcc.Graph(
         id='example-graph-2',
         figure=fig
     ),
-
+    html.Br(),
+    dash_table.DataTable(
+        id='table',
+        columns=[{"name": i, "id": i} for i in df2.columns],
+        data=df2.to_dict('records'),
+    ),
     html.Div(children=warning_card(), style={
         'textAlign': 'left',
         'color': colors['text']
     })
-
-
-
 ])
 
 
