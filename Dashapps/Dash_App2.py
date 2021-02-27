@@ -56,8 +56,10 @@ def ticker_card():
             html.H3(children='Portfolio'),
             html.Div(children=[step()], id='step_list'),
             html.Br(),
-            html.Button('Add Ticker', id='add_step_button', n_clicks_timestamp='0'),
-            html.Button('Remove Ticker', id='remove_step_button', n_clicks_timestamp='0')])
+            dbc.Button('Add Ticker', color="secondary", id='add_step_button', n_clicks_timestamp='0', className="mr-1"),
+            dbc.Button('Remove Ticker', color="secondary", id='remove_step_button', n_clicks_timestamp='0', className="mr-1")
+            ]
+    )
 
 
 
