@@ -21,7 +21,7 @@ from .compute_util.stockinterface import isTickerValid, getCorrelationMatrix
 url_base = '/dash/app2/'
 
 def get_dummy_df():
-    d = {'-': [0, 0], '--': [0, 0]}
+    d = {'-': [0, 0], '- ': [0, 0]}
     df = pd.DataFrame(data=d)
     return df
 
@@ -30,7 +30,7 @@ df_corr =  get_dummy_df()
 def description_card():
     return html.Div(
         id="description_card",
-        children="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+        children="This tool can compute the correlation of your assets. It uses the ticker of yahoo and computes the correlation for all combinations of your assets. This is called the correlation matrix. The coorelation is computed on the daily, as well as on the monthly performance. We compute it for the maximum timeframe of the data. But additionally, you can also enter a custom timeframe. You have to be careful with currency. We don't check the currency, so don't mix currencies.",
     style={
         'backgroundColor': colors['background'],
     })
@@ -40,6 +40,13 @@ def ticker_card():
     return html.Div(
         children=[
             html.H3(children='Portfolio'),
+            dbc.Alert(
+                [
+                    "You can get Tickers from ",
+                    html.A("here", href="https://finance.yahoo.com", className="alert-link", target='_blank'),
+                ],
+                color="primary",
+            ),
             html.Div(children=[], id='container_ticker'),
             dbc.Button('Add Ticker', color="secondary", id='add_ticker_button',  n_clicks=1, className="mr-1"),
             ],
@@ -243,7 +250,7 @@ def Add_Dash(server):
 
             result_tickers = isValid_tickers(ticker_values)
             if not result_tickers[1]:
-                return 'Ticker at position {} is not valid'.format(result_tickers[0]+1), df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max
+                return 'Ticker at position {} cannot be found on yahoo'.format(result_tickers[0]+1), df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max
 
             corr_result_max = getCorrelationMatrix(ticker_values, daily=True)
             corr_result_max_monthly = getCorrelationMatrix(ticker_values, daily=False)
