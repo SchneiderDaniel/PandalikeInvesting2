@@ -21,7 +21,14 @@ from .compute_util.stockinterface import isTickerValid, getCorrelationMatrix
 url_base = '/dash/app2/'
 
 
-df2 = pd.read_csv('./app/base/static/testdata/solar.csv')
+
+def get_dummy_df():
+    d = {'-': [0, 0], '--': [0, 0]}
+    df = pd.DataFrame(data=d)
+    return df
+
+
+df2 =  get_dummy_df()
 
 
 
@@ -77,7 +84,7 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor
                 'backgroundColor': 'rgb(248, 248, 248)'
             },
             {
-               'if': {'column_id': 'State'},
+               'if': {'column_id': 'Ticker'},
                'backgroundColor': 'rgb(230, 230, 230)' 
             }
         ],
@@ -88,7 +95,7 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor
         style_cell={
             'font-family':'"Poppins", sans-serif'
         },
-        id='table',
+        id='compute-table',
         columns=[{"name": i, "id": i} for i in df2.columns],
         data=df2.to_dict('records'),
     ),
@@ -127,7 +134,9 @@ def Add_Dash(server):
     apply_layout_without_auth(app, layout)
 
     @app.callback(
-        Output("compute-output", "children"),
+        [Output("compute-output", "children"),
+        Output(component_id='compute-table', component_property='data'),
+        Output(component_id='compute-table', component_property='columns')],
         [Input(component_id={'type': 'dynamic-ticker', 'index': ALL}, component_property='value'),
         Input(component_id={'type': 'dynamic-percent', 'index': ALL}, component_property='value'),
         Input('compute-button', 'n_clicks')]
@@ -135,29 +144,42 @@ def Add_Dash(server):
     def compute(ticker_values, percent_values,n_clicks):    
         changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
         msg = ""
+        df_corr_result_max = get_dummy_df()
+        columns_corr_result_max = [{'name': col, 'id': col} for col in df_corr_result_max.columns]
         if 'compute-button' in changed_id:
             # print(ticker_values)
             # print(percent_values)
 
-            if len(ticker_values)<2: return 'You need at least 2 tickers.'
+            if len(ticker_values)<2: return 'You need at least 2 tickers.', df_corr_result_max.to_dict(orient='records'),columns_corr_result_max
 
             result_percents = isValid_percents(percent_values)
-            if (result_percents==2): return 'Sum of percent needs to be 0 or 100'
+            if (result_percents==2): return 'Sum of percent needs to be 0 or 100', df_corr_result_max.to_dict(orient='records'), columns_corr_result_max
 
             result_tickers = isValid_tickers(ticker_values)
             if not result_tickers[1]:
-                return 'Ticker at position {} is not valid'.format(result_tickers[0]+1)
+                return 'Ticker at position {} is not valid'.format(result_tickers[0]+1), df_corr_result_max.to_dict(orient='records'),columns_corr_result_max
 
             corr_result_max = getCorrelationMatrix(ticker_values)
+            
 
             print(corr_result_max)
             df_corr_result_max = pd.DataFrame(data=corr_result_max[0], index=ticker_values, columns=ticker_values)
+            #add 
+            # df_corr_result_max['Ticker'] = pd.Series(ticker_values,index=df_corr_result_max.index) 
+            df_corr_result_max.insert(loc=0, column='Ticker', value=ticker_values)
+
+
+
             print(df_corr_result_max)
+            # df_corr_result_max.rename(columns={ df_corr_result_max.columns[-1]: "-" }, inplace = True)
+            # print(df_corr_result_max)
+            columns_corr_result_max = [{'name': col, 'id': col} for col in df_corr_result_max.columns]
+    
 
-            msg = 'Computation number {} has finished'.format(n_clicks)
+            return 'Computation number {} has finished'.format(n_clicks), df_corr_result_max.to_dict('records'),columns_corr_result_max
+             
 
-
-        return msg
+        return msg, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max
 
 
     
