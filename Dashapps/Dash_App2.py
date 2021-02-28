@@ -28,7 +28,7 @@ def get_dummy_df():
     return df
 
 
-df2 =  get_dummy_df()
+df_corr =  get_dummy_df()
 
 
 
@@ -96,8 +96,8 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor
             'font-family':'"Poppins", sans-serif'
         },
         id='compute-table',
-        columns=[{"name": i, "id": i} for i in df2.columns],
-        data=df2.to_dict('records'),
+        columns=[{"name": i, "id": i} for i in df_corr.columns],
+        data=df_corr.to_dict('records'),
     ),
     html.Br(),
     html.Div(children=warning_card(), style={
@@ -147,8 +147,6 @@ def Add_Dash(server):
         df_corr_result_max = get_dummy_df()
         columns_corr_result_max = [{'name': col, 'id': col} for col in df_corr_result_max.columns]
         if 'compute-button' in changed_id:
-            # print(ticker_values)
-            # print(percent_values)
 
             if len(ticker_values)<2: return 'You need at least 2 tickers.', df_corr_result_max.to_dict(orient='records'),columns_corr_result_max
 
@@ -161,24 +159,14 @@ def Add_Dash(server):
 
             corr_result_max = getCorrelationMatrix(ticker_values)
             
-
-            print(corr_result_max)
+            # print(corr_result_max)
             df_corr_result_max = pd.DataFrame(data=corr_result_max[0], index=ticker_values, columns=ticker_values)
-            #add 
-            # df_corr_result_max['Ticker'] = pd.Series(ticker_values,index=df_corr_result_max.index) 
             df_corr_result_max.insert(loc=0, column='Ticker', value=ticker_values)
-
-
-
-            print(df_corr_result_max)
-            # df_corr_result_max.rename(columns={ df_corr_result_max.columns[-1]: "-" }, inplace = True)
             # print(df_corr_result_max)
             columns_corr_result_max = [{'name': col, 'id': col} for col in df_corr_result_max.columns]
     
-
-            return 'Computation number {} has finished'.format(n_clicks), df_corr_result_max.to_dict('records'),columns_corr_result_max
+            return 'Computation finished: Timeframe from {} to {}'.format(corr_result_max[1],corr_result_max[2]), df_corr_result_max.to_dict('records'),columns_corr_result_max
              
-
         return msg, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max
 
 
