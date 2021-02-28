@@ -103,7 +103,6 @@ def isValid_tickers(ticker_values):
 
     for i in range(len(ticker_values)):
         if  ticker_values[i]=="": return [i,False]
-
     
     for i in range(len(ticker_values)):
         if not isTickerValid(ticker_values[i]): return [i,False]
@@ -147,9 +146,6 @@ def Add_Dash(server):
             result_tickers = isValid_tickers(ticker_values)
             if not result_tickers[1]:
                 return 'Ticker at position {} is not valid'.format(result_tickers[0]+1)
-
-
-
 
 
             msg = 'Computation number {} has finished'.format(n_clicks)
