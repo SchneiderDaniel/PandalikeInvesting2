@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 from .dash_base import warning_card, colors
 
-from .compute_util.stockinterface import isTickerValid
+from .compute_util.stockinterface import isTickerValid, getCorrelationMatrix
 
 # from ./compute_util/stockinterface import isTickerValid
 
@@ -67,8 +67,9 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor
     ticker_card(),
     html.Br(),
     dbc.Button("Compute (Takes some time)", id="compute-button", color="primary", block=True),
-    html.Span(id="compute-output", style={"vertical-align": "middle"}),
+    html.Span(id="compute-output", style={"vertical-align": "middle","font-style": "italic" }),
     html.Br(),
+    html.H3(children='Result'),
     dash_table.DataTable(
         style_data_conditional=[
             {
@@ -135,8 +136,8 @@ def Add_Dash(server):
         changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
         msg = ""
         if 'compute-button' in changed_id:
-            print(ticker_values)
-            print(percent_values)
+            # print(ticker_values)
+            # print(percent_values)
 
             if len(ticker_values)<2: return 'You need at least 2 tickers.'
 
@@ -147,6 +148,11 @@ def Add_Dash(server):
             if not result_tickers[1]:
                 return 'Ticker at position {} is not valid'.format(result_tickers[0]+1)
 
+            corr_result_max = getCorrelationMatrix(ticker_values)
+
+            print(corr_result_max)
+            df_corr_result_max = pd.DataFrame(data=corr_result_max[0], index=ticker_values, columns=ticker_values)
+            print(df_corr_result_max)
 
             msg = 'Computation number {} has finished'.format(n_clicks)
 

@@ -216,9 +216,7 @@ def getCorrelationMatrix(tickers, filterStart = dt.datetime(1971,1,1), filterEnd
     dfList = []
 
     for tick in tickers:
-        updateStockData(tick)
-        stockdataPath = os.path.join(current_app.root_path, 'static/resources/stockdata/' + tick + '.pkl')
-        dfToAdd = pd.read_pickle(stockdataPath)    
+        dfToAdd = web.DataReader(tick, 'yahoo', dt.datetime(1971,1,1),  dt.datetime.now()) 
         dfReduce= dfToAdd.drop(dfToAdd.columns.difference(['Adj Close']), 1)
         # print(tick)
         # print(dfReduce)
@@ -270,11 +268,6 @@ def getCorrelationMatrix(tickers, filterStart = dt.datetime(1971,1,1), filterEnd
         evaluatedFrom = filterStart.strftime('%d. %B %Y')
         evaluatedTo = filterEnd.strftime('%d. %B %Y')
 
-    
-
-
-
-
     result = merge.corr().values
     result= result.round(4)
 
@@ -298,7 +291,7 @@ def saveStockDataFromScratch(ticker):
     start = dt.datetime(1971,1,1)
     end = dt.datetime.now()
     # end = dt.datetime(2020,2,1)
-    df = web.DataReader(ticker, 'yahoo', start, end)
+    df = web.DataReader(ticker, 'yahoo', dt.datetime(1971,1,1),  dt.datetime.now())
        
     print(stockdataPath,  file=sys.stderr)
 
