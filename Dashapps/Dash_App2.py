@@ -6,7 +6,6 @@ from .Dash_fun import apply_layout_with_auth,apply_layout_without_auth, load_obj
 import dash_core_components as dcc
 import dash_html_components as html
 
-
 import dash
 import dash_table
 import dash_bootstrap_components as dbc
@@ -14,6 +13,10 @@ import plotly.graph_objs as go
 import numpy as np
 import pandas as pd
 from .dash_base import warning_card, colors
+
+from .compute_util.stockinterface import isTickerValid
+
+# from ./compute_util/stockinterface import isTickerValid
 
 url_base = '/dash/app2/'
 
@@ -63,7 +66,7 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor
     html.Br(),
     ticker_card(),
     html.Br(),
-    dbc.Button("Compute", id="compute-button", color="primary", block=True),
+    dbc.Button("Compute (Takes some time)", id="compute-button", color="primary", block=True),
     html.Span(id="compute-output", style={"vertical-align": "middle"}),
     html.Br(),
     dash_table.DataTable(
@@ -96,6 +99,26 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor
     })
 ])
 
+def isValid_tickers(ticker_values):
+
+    for i in range(len(ticker_values)):
+        if  ticker_values[i]=="": return [i,False]
+
+    
+    for i in range(len(ticker_values)):
+        if not isTickerValid(ticker_values[i]): return [i,False]
+    return [0,True]
+
+def isValid_percents(percent_values):
+    sum=0
+    for percent in percent_values:
+        percent = float(percent)
+        sum+=percent
+    if (sum==0): return 0
+    if (sum==100): return 1
+    return 2
+
+
 
 
 def Add_Dash(server):
@@ -106,12 +129,33 @@ def Add_Dash(server):
     @app.callback(
         Output("compute-output", "children"),
         [Input(component_id={'type': 'dynamic-ticker', 'index': ALL}, component_property='value'),
-        Input(component_id={'type': 'dynamic-percent', 'index': ALL}, component_property='value')]
+        Input(component_id={'type': 'dynamic-percent', 'index': ALL}, component_property='value'),
+        Input('compute-button', 'n_clicks')]
     )
-    def compute(ticker_values, percent_values):
-        print(ticker_values)
-        print(percent_values)
-        # return "Testi"
+    def compute(ticker_values, percent_values,n_clicks):    
+        changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+        msg = ""
+        if 'compute-button' in changed_id:
+            print(ticker_values)
+            print(percent_values)
+
+            if len(ticker_values)<2: return 'You need at least 2 tickers.'
+
+            result_percents = isValid_percents(percent_values)
+            if (result_percents==2): return 'Sum of percent needs to be 0 or 100'
+
+            result_tickers = isValid_tickers(ticker_values)
+            if not result_tickers[1]:
+                return 'Ticker at position {} is not valid'.format(result_tickers[0]+1)
+
+
+
+
+
+            msg = 'Computation number {} has finished'.format(n_clicks)
+
+
+        return msg
 
 
     
@@ -140,7 +184,7 @@ def Add_Dash(server):
                         dbc.Col( 
                             children=[
                                 html.Div("Percent:"),
-                                dbc.Input(type="number", value='5', placeholder="Enter %",
+                                dbc.Input(type="number", value='0', placeholder="Enter %",
                                 id={
                                     'type': 'dynamic-percent',
                                     'index': n_clicks
@@ -155,12 +199,6 @@ def Add_Dash(server):
         ])
         div_children.append(new_child)
         return div_children
-
- 
-
-
-
-
 
 
 
