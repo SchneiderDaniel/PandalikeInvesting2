@@ -20,17 +20,12 @@ from .compute_util.stockinterface import isTickerValid, getCorrelationMatrix
 
 url_base = '/dash/app2/'
 
-
-
 def get_dummy_df():
     d = {'-': [0, 0], '--': [0, 0]}
     df = pd.DataFrame(data=d)
     return df
 
-
 df_corr =  get_dummy_df()
-
-
 
 def description_card():
     return html.Div(
@@ -77,6 +72,7 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor
     html.Span(id="compute-output", style={"vertical-align": "middle","font-style": "italic" }),
     html.Br(),
     html.H3(children='Result'),
+    html.P(children='Daily - Maximum Timeframe',style={"font-style": "italic" }),
     dash_table.DataTable(
         style_data_conditional=[
             {
@@ -95,7 +91,31 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor
         style_cell={
             'font-family':'"Poppins", sans-serif'
         },
-        id='compute-table',
+        id='compute-table-daily',
+        columns=[{"name": i, "id": i} for i in df_corr.columns],
+        data=df_corr.to_dict('records'),
+    ),
+    html.Br(),
+    html.P(children='Monthly - Maximum Timeframe',style={"font-style": "italic" }),
+    dash_table.DataTable(
+        style_data_conditional=[
+            {
+                'if': {'row_index': 'odd'},
+                'backgroundColor': 'rgb(248, 248, 248)'
+            },
+            {
+               'if': {'column_id': 'Ticker'},
+               'backgroundColor': 'rgb(230, 230, 230)' 
+            }
+        ],
+        style_header={
+            'backgroundColor': 'rgb(230, 230, 230)',
+            # 'fontWeight': 'bold'
+        },
+        style_cell={
+            'font-family':'"Poppins", sans-serif'
+        },
+        id='compute-table-monthly',
         columns=[{"name": i, "id": i} for i in df_corr.columns],
         data=df_corr.to_dict('records'),
     ),
@@ -135,8 +155,10 @@ def Add_Dash(server):
 
     @app.callback(
         [Output("compute-output", "children"),
-        Output(component_id='compute-table', component_property='data'),
-        Output(component_id='compute-table', component_property='columns')],
+        Output(component_id='compute-table-daily', component_property='data'),
+        Output(component_id='compute-table-daily', component_property='columns'),
+        Output(component_id='compute-table-monthly', component_property='data'),
+        Output(component_id='compute-table-monthly', component_property='columns')],
         [Input(component_id={'type': 'dynamic-ticker', 'index': ALL}, component_property='value'),
         Input(component_id={'type': 'dynamic-percent', 'index': ALL}, component_property='value'),
         Input('compute-button', 'n_clicks')]
@@ -148,26 +170,31 @@ def Add_Dash(server):
         columns_corr_result_max = [{'name': col, 'id': col} for col in df_corr_result_max.columns]
         if 'compute-button' in changed_id:
 
-            if len(ticker_values)<2: return 'You need at least 2 tickers.', df_corr_result_max.to_dict(orient='records'),columns_corr_result_max
+            if len(ticker_values)<2: return 'You need at least 2 tickers.', df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, f_corr_result_max.to_dict(orient='records'),columns_corr_result_max
 
             result_percents = isValid_percents(percent_values)
-            if (result_percents==2): return 'Sum of percent needs to be 0 or 100', df_corr_result_max.to_dict(orient='records'), columns_corr_result_max
+            if (result_percents==2): return 'Sum of percent needs to be 0 or 100', df_corr_result_max.to_dict(orient='records'), columns_corr_result_max, f_corr_result_max.to_dict(orient='records'),columns_corr_result_max
 
             result_tickers = isValid_tickers(ticker_values)
             if not result_tickers[1]:
-                return 'Ticker at position {} is not valid'.format(result_tickers[0]+1), df_corr_result_max.to_dict(orient='records'),columns_corr_result_max
+                return 'Ticker at position {} is not valid'.format(result_tickers[0]+1), df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, f_corr_result_max.to_dict(orient='records'),columns_corr_result_max
 
             corr_result_max = getCorrelationMatrix(ticker_values)
+            corr_result_max_monthly = getCorrelationMatrix(ticker_values,daily=False)
             
             # print(corr_result_max)
             df_corr_result_max = pd.DataFrame(data=corr_result_max[0], index=ticker_values, columns=ticker_values)
             df_corr_result_max.insert(loc=0, column='Ticker', value=ticker_values)
+            df_corr_result_max_monthly = pd.DataFrame(data=corr_result_max_monthly[0], index=ticker_values, columns=ticker_values)
+            df_corr_result_max_monthly.insert(loc=0, column='Ticker', value=ticker_values)
+
             # print(df_corr_result_max)
             columns_corr_result_max = [{'name': col, 'id': col} for col in df_corr_result_max.columns]
+            columns_corr_result_max_monthly = [{'name': col, 'id': col} for col in df_corr_result_max_monthly.columns]
     
-            return 'Computation finished: Timeframe from {} to {}'.format(corr_result_max[1],corr_result_max[2]), df_corr_result_max.to_dict('records'),columns_corr_result_max
+            return 'Computation finished: Timeframe from {} to {}'.format(corr_result_max[1],corr_result_max[2]), df_corr_result_max.to_dict('records'),columns_corr_result_max, df_corr_result_max_monthly.to_dict('records'),columns_corr_result_max_monthly
              
-        return msg, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max
+        return msg, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, f_corr_result_max.to_dict(orient='records'),columns_corr_result_max
 
 
     
