@@ -14,76 +14,54 @@ import dash_table
 
 url_base = '/dash/app1/'
 
-df = pd.DataFrame({
-    "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-    "Amount": [4, 1, 2, 2, 4, 5],
-    "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
-})
 
-
-df2 = pd.read_csv('./app/base/static/testdata/solar.csv')
-
-
-
-fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
-
-fig.update_layout(
-    plot_bgcolor=colors['background'],
-    paper_bgcolor=colors['background'],
-    font_color=colors['text']
-)
 
 def description_card():
     return html.Div(
-        id="description-card",
-        children="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+        id="description_card",
+        children="This tool wants to help you to rebalance your portfolio. If you have a desired distribution among a set of assets, it comes the time where this distribution is not longer the same. Some assets have increased and some decreased in value. If you now want to reblance your assets, this tool should make it easy for you.",
+    style={
+        'backgroundColor': colors['background'],
+    })
+
+def asset_card():
+
+    return html.Div(
+        children=[
+            html.H3(children='Portfolio'),
+            html.Div(children=[], id='container_asset'),
+            dbc.Button('Add Asset', color="secondary", id='add_ticker_button',  n_clicks=1, className="mr-1"),
+            ],
+        style={
+        'backgroundColor': colors['background'],
+        }
     )
 
+
+
 # The Layout
-layout = html.Div(style={'font-family':'"Poppins", sans-serif'}, children=[
+layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor': colors['background']}, children=[
     html.H1(
-        children='This is a title',
+        children='Portfolio Rebalancing',
         style={
             'textAlign': 'center',
-            'color': colors['text']
+            'color': colors['text'],
+            'backgroundColor': colors['background']
         }
     ),
     html.Div(children=description_card(), style={
         'textAlign': 'center',
-        'color': colors['text']
+        'color': colors['text'],
+        'backgroundColor': colors['background']
     }),
     html.Br(),
-    dcc.Graph(
-        id='example-graph-2',
-        figure=fig
-    ),
+    asset_card(),
     html.Br(),
-    dash_table.DataTable(
-        style_data_conditional=[
-            {
-                'if': {'row_index': 'odd'},
-                'backgroundColor': 'rgb(248, 248, 248)'
-            },
-            {
-               'if': {'column_id': 'State'},
-               'backgroundColor': 'rgb(230, 230, 230)' 
-            }
-        ],
-        style_header={
-            'backgroundColor': 'rgb(230, 230, 230)',
-            # 'fontWeight': 'bold'
-        },
-        style_cell={
-            'font-family':'"Poppins", sans-serif'
-        },
-        id='table',
-        columns=[{"name": i, "id": i} for i in df2.columns],
-        data=df2.to_dict('records'),
-    ),
     html.Br(),
     html.Div(children=warning_card(), style={
         'textAlign': 'left',
-        'color': colors['text']
+        'color': colors['text'],
+        'backgroundColor': colors['background']
     })
 ])
 
@@ -92,10 +70,111 @@ def Add_Dash(server):
     app = Dash(server=server, url_base_pathname=url_base, external_stylesheets = [dbc.themes.BOOTSTRAP], meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}])
     apply_layout_with_auth(app, layout)
 
-    # @app.callback(
-    #         Output('target', 'children'),
-    #         [Input('input_text', 'value')])
-    # def callback_fun(value):
-    #     return 'your input is {}'.format(value)
-    
+
+    @app.callback(
+        Output('container_asset', 'children'),
+        [Input('add_ticker_button', 'n_clicks')],
+        [State('container_asset', 'children')]
+    )
+    def display_tickers(n_clicks, div_children):
+
+        new_child= html.Div(
+            children=[
+                html.P("Asset #" + str(n_clicks) ),
+                dbc.Row(
+                    [
+                        dbc.Col( 
+                            children=[
+                                html.Div("Pieces:"),
+                                dbc.Input(type="number", value='4', placeholder="Enter the number of pieces ",
+                                id={
+                                    'type': 'dynamic-quantity',
+                                    'index': n_clicks
+                                })
+                            ],
+                            width=3
+                        ),
+                        dbc.Col( 
+                            children=[
+                                html.Div("Price:"),
+                                dbc.Input(type="number", value='213.13', placeholder="Enter price per piece",
+                                id={
+                                    'type': 'dynamic-price',
+                                    'index': n_clicks
+                                })
+                            ],
+                            width=3
+                        ),
+                        dbc.Col( 
+                            children=[
+                                html.Div("Value:"),
+                                html.P(children='-',
+                                id={
+                                    'type': 'dynamic-sum',
+                                    'index': n_clicks
+                                })
+                            ],
+                            width=3
+                        ),
+                        dbc.Col( 
+                            children=[
+                                html.Div("Goal (%):"),
+                                dbc.Input(type="number", value='10', placeholder="Enter percent of asset",
+                                id={
+                                    'type': 'dynamic-percent',
+                                    'index': n_clicks
+                                })
+                            ],
+                            width=3
+                        )
+                    ],
+                    style = { 'width': '100%'}
+                ),
+                dbc.Toast([
+                dbc.Row(
+                    [
+                        
+                        dbc.Col( 
+                            children=[
+                                html.Div("New Value:"),
+                                html.P(children='4',
+                                id={
+                                    'type': 'dynamic-new_value',
+                                    'index': n_clicks
+                                })
+                            ],
+                            width=4
+                        ),
+                        dbc.Col( 
+                            children=[
+                                html.Div("Change:"),
+                                html.P(children='-1000',
+                                id={
+                                    'type': 'dynamic-change',
+                                    'index': n_clicks
+                                })
+                            ],
+                            width=4
+                        ),
+                        dbc.Col( 
+                            children=[
+                                html.Div("Piece:"),
+                                html.P(children='-5.5',
+                                id={
+                                    'type': 'dynamic-piece-exact',
+                                    'index': n_clicks
+                                })
+                            ],
+                            width=4
+                        )
+                    ],
+                    style = { 'width': '100%'}
+                ),
+                ],header="Change the asset to:", style={"maxWidth": "450px"}),
+
+                html.Br(),
+        ])
+        div_children.append(new_child)
+        return div_children
+
     return app.server
