@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from dash import Dash
-from dash.dependencies import Input, State, Output
+from dash.dependencies import Input, Output, ALL, State, MATCH, ALLSMALLER, ClientsideFunction
 from .Dash_fun import apply_layout_with_auth, load_object, save_object
 import dash_core_components as dcc
 import dash_html_components as html
@@ -69,6 +69,27 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor
 def Add_Dash(server):
     app = Dash(server=server, url_base_pathname=url_base, external_stylesheets = [dbc.themes.BOOTSTRAP], meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}])
     apply_layout_with_auth(app, layout)
+
+
+    @app.callback(
+        [Output(component_id={'type': 'dynamic-sum', 'index': MATCH}, component_property='children')],
+        [Input(component_id={'type': 'dynamic-quantity', 'index': MATCH}, component_property='value'),
+        Input(component_id={'type': 'dynamic-price', 'index': MATCH}, component_property='value')]
+    )
+    def updateSumValue(quantity,price):
+        
+        if quantity is not None:
+            quantity = float(quantity)
+        else:
+            quantity = 0.0
+        if price is not None: 
+            price= float(price)
+        else:
+            price = 0.0
+
+        result = price*quantity
+
+        return ["%.2f" % result]
 
 
     @app.callback(
