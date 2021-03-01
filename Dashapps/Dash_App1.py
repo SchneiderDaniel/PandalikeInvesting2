@@ -76,8 +76,7 @@ def Add_Dash(server):
         [Input(component_id={'type': 'dynamic-quantity', 'index': MATCH}, component_property='value'),
         Input(component_id={'type': 'dynamic-price', 'index': MATCH}, component_property='value')]
     )
-    def updateSumValue(quantity,price):
-        
+    def updateSumValue(quantity,price):      
         if quantity is not None:
             quantity = float(quantity)
         else:
@@ -86,9 +85,7 @@ def Add_Dash(server):
             price= float(price)
         else:
             price = 0.0
-
         result = price*quantity
-
         return ["%.2f" % result]
 
 
