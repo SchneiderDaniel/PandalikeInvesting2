@@ -208,7 +208,7 @@ def Add_Dash(server):
 
         new_child= html.Div(
             children=[
-                html.P("Asset #" + str(n_clicks) ),
+                html.P("Asset #" + str(n_clicks) ,style = {"color": "#00b0f0"}),
                 dbc.Row(
                     [
                         dbc.Col( 
