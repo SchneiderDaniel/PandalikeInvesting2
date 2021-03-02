@@ -56,6 +56,7 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor
     }),
     html.Br(),
     asset_card(),
+    html.Span(id="compute-output", style={"vertical-align": "middle","font-style": "italic" }),
     html.Br(),
     html.Br(),
     html.Div(children=warning_card(), style={
@@ -65,10 +66,119 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor
     })
 ])
 
+def get_dummy_result(l,text):
+    
+    result = []
+    text = [text]
+    for i in range(l):
+        result.append("-")
+    return result,result,result,text
+
+def sumsTo100(percents):
+    sum = 0
+    for p in percents:
+        if p is not None:
+            sum+=float(p)
+    return sum==100
+
+def hasNoneType(quantities,prices,percents):
+    for q in quantities:
+        if q is None:
+            return True
+    for pr in prices:
+        if pr is None:
+            return True
+    for p in percents:
+        if p is None:
+            return True
+    return False
+
+def getPortfolioSize(quantities,prices):
+    sum = 0
+    for i in range(len(quantities)):
+        sum+=(float(quantities[i])*float(prices[i]))
+    return sum
+
+def getValues(quantities,prices):
+    result =[]
+    for i in range(len(quantities)):
+        result.append(float(quantities[i])*float(prices[i]))
+    return result
+
+def getNewValues(portfolioSize,percents):
+    newValues = []
+    for i in range(len(percents)):
+        newValues.append(float(portfolioSize)*float(percents[i])/100.0)
+    return newValues
+    
+def getChanges(values,new_Values):
+    changes = []
+    for i in range(len(values)):
+        changes.append(float(new_Values[i])-float(values[i]))
+    return changes
+
+def getPieces(changes,prices):
+    pieces = []
+    for i in range(len(changes)):
+        pieces.append(float(changes[i])/float(prices[i]))
+    return pieces
+
+def convertToString(value_list):
+    result = []
+    for i in range(len(value_list)):
+        if (value_list[i]>=0):
+            result.append("+"+"{:.2f}".format(value_list[i]))
+        if (value_list[i]<0):
+            result.append("{:.2f}".format(value_list[i]))
+    return result
 
 def Add_Dash(server):
     app = Dash(server=server, url_base_pathname=url_base, external_stylesheets = [dbc.themes.BOOTSTRAP], meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}])
     apply_layout_with_auth(app, layout)
+
+    @app.callback(
+        [Output(component_id={'type': 'dynamic-new_value', 'index': ALL}, component_property='children'),
+        Output(component_id={'type': 'dynamic-change', 'index': ALL}, component_property='children'),
+        Output(component_id={'type': 'dynamic-piece-exact', 'index': ALL}, component_property='children'),
+        Output("compute-output", "children")],
+        [Input(component_id={'type': 'dynamic-quantity', 'index': ALL}, component_property='value'),
+        Input(component_id={'type': 'dynamic-price', 'index': ALL}, component_property='value'),
+        Input(component_id={'type': 'dynamic-percent', 'index': ALL}, component_property='value'),]
+    )
+    def computeBalance(quantities,prices,percents):      
+        
+        if hasNoneType(quantities,prices,percents):
+            return get_dummy_result(len(quantities),"A field is empty")
+
+        if not sumsTo100(percents):
+            return get_dummy_result(len(quantities),"Goal does not sum to 100%")
+
+        portfolioSize = getPortfolioSize(quantities,prices)
+        values = getValues(quantities,prices)
+        print("Portfolio Size")
+        print(portfolioSize)
+
+        new_Values = getNewValues(portfolioSize,percents)
+        print("New Values")
+        print(new_Values)
+
+        changes  = getChanges(values,new_Values)
+        print("Change")
+        print(changes)
+
+        pieces = getPieces(changes,prices)
+        print("Pieces")
+        print(pieces)
+
+        resutlText = []
+        resutlText.append("The result is ready.")
+
+        return new_Values, convertToString(changes), convertToString(pieces), resutlText
+
+        # return get_dummy_result(len(quantities),"Dummy error")
+
+
+
 
 
     @app.callback(
@@ -176,7 +286,7 @@ def Add_Dash(server):
                         ),
                         dbc.Col( 
                             children=[
-                                html.Div("Piece:"),
+                                html.Div("Pieces:"),
                                 html.P(children='-5.5',
                                 id={
                                     'type': 'dynamic-piece-exact',
