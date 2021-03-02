@@ -14,8 +14,6 @@ import dash_table
 
 url_base = '/dash/app1/'
 
-
-
 def description_card():
     return html.Div(
         id="description_card",
@@ -25,7 +23,6 @@ def description_card():
     })
 
 def asset_card():
-
     return html.Div(
         children=[
             html.H3(children='Portfolio'),
@@ -36,8 +33,6 @@ def asset_card():
         'backgroundColor': colors['background'],
         }
     )
-
-
 
 # The Layout
 layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor': colors['background']}, children=[
@@ -66,8 +61,7 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor
     })
 ])
 
-def get_dummy_result(l,text):
-    
+def get_dummy_result(l,text):  
     result = []
     text = [text]
     for i in range(l):
@@ -147,6 +141,9 @@ def Add_Dash(server):
     )
     def computeBalance(quantities,prices,percents):      
         
+        if len(quantities)==1:
+            return get_dummy_result(len(quantities),"You need at least 2 assets")
+
         if hasNoneType(quantities,prices,percents):
             return get_dummy_result(len(quantities),"A field is empty")
 
@@ -155,31 +152,13 @@ def Add_Dash(server):
 
         portfolioSize = getPortfolioSize(quantities,prices)
         values = getValues(quantities,prices)
-        print("Portfolio Size")
-        print(portfolioSize)
-
         new_Values = getNewValues(portfolioSize,percents)
-        print("New Values")
-        print(new_Values)
-
         changes  = getChanges(values,new_Values)
-        print("Change")
-        print(changes)
-
         pieces = getPieces(changes,prices)
-        print("Pieces")
-        print(pieces)
-
         resutlText = []
         resutlText.append("The result is ready.")
 
         return new_Values, convertToString(changes), convertToString(pieces), resutlText
-
-        # return get_dummy_result(len(quantities),"Dummy error")
-
-
-
-
 
     @app.callback(
         [Output(component_id={'type': 'dynamic-sum', 'index': MATCH}, component_property='children')],
@@ -197,7 +176,6 @@ def Add_Dash(server):
             price = 0.0
         result = price*quantity
         return ["%.2f" % result]
-
 
     @app.callback(
         Output('container_asset', 'children'),
