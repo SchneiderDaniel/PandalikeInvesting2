@@ -2,11 +2,11 @@ version: "3.7"
 
 services:
 
-  flask:
+  flask_webapp:
     build: ./flask
     env_file: 
       - flask.env
-    container_name: flask
+    container_name: flask_webapp
     restart: always
     volumes:
       - flask-resources:/app/homepage/static/resources
@@ -17,9 +17,9 @@ services:
     depends_on:
       - db
 
-  db:
+  postgres_db:
     image: postgres
-    container_name: postgres
+    container_name: postgres_db
     restart: always
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -28,9 +28,9 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
-  nginx:
+  nginx_web_server:
     build: ./nginx
-    container_name: nginx
+    container_name: nginx_web_server
     restart: always
     ports:
       - "80:80"
