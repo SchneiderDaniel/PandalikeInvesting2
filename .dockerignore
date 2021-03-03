@@ -2,4 +2,4 @@ env/
 __pycache__/
 .pytest_cache/
 .vscode/
-homepage/__pycache__/
+flask/__pycache__/

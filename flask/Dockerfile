@@ -1,5 +1,5 @@
 # Use the Python3.7.2 image
-FROM python:3.7.2-stretch
+FROM python:3.9.2-buster
 
 
 

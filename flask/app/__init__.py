@@ -55,9 +55,9 @@ def configure_database(app, user_datastore):
             user_datastore.create_role(name='admin')
             db_session.commit()
 
-            user_datastore.create_user(email='test@testdefault.de', username='testdefault', password= encrypt_password(app.config['ADMIN_PASSWORD']), roles=['default'], confirmed_at=datetime.datetime.now(), active=True)
-            user_datastore.create_user(email='test@testmember.de', username='testmember', password= encrypt_password(app.config['ADMIN_PASSWORD']), roles=['member'], confirmed_at=datetime.datetime.now(), active=True)
-            user_datastore.create_user(email=app.config['ADMIN_EMAIL'],username=app.config['ADMIN_USERNAME'], password= encrypt_password(app.config['ADMIN_PASSWORD']), roles=['admin'], confirmed_at=datetime.datetime.now(), active=True)
+            user_datastore.create_user(email='test@testdefault.de', username='testdefault', password= encrypt_password(app.config['ADMIN_PASSWORD']), roles=['default'], confirmed_at=datetime.now(), active=True)
+            user_datastore.create_user(email='test@testmember.de', username='testmember', password= encrypt_password(app.config['ADMIN_PASSWORD']), roles=['member'], confirmed_at=datetime.now(), active=True)
+            user_datastore.create_user(email=app.config['ADMIN_EMAIL'],username=app.config['ADMIN_USERNAME'], password= encrypt_password(app.config['ADMIN_PASSWORD']), roles=['admin'], confirmed_at=datetime.now(), active=True)
             db_session.commit()
 
 def configure_logs(app):
