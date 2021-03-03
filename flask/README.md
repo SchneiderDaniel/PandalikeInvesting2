@@ -66,3 +66,4 @@ You need to set the following env. variables.
 [Dash Bootstrap Components](https://dash-bootstrap-components.opensource.faculty.ai/docs/components/alert/)
 [Dynamic Callback Tutorial](https://www.youtube.com/watch?v=4gDwKYaA6ww)
 [Dynamic Callback Docu](https://dash.plotly.com/pattern-matching-callbacks)
+[uwsgi example](https://www.techatbloomberg.com/blog/configuring-uwsgi-production-deployment/)

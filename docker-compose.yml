@@ -25,7 +25,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - .postgres_db/data:/var/lib/postgresql/data
+      - ./postgres_db/data:/var/lib/postgresql/data
 
   nginx_web_server:
     build: ./nginx
@@ -35,7 +35,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - .nginx_web_server/nginx_errors:/var/log/nginx
+      - ./nginx_web_server/nginx_errors:/var/log/nginx
       - /etc/ssl:/etc/ssl # dhparams file
       - /etc/letsencrypt/live:/etc/letsencrypt/live # current certificate
       - /etc/letsencrypt/archive:/etc/letsencrypt/archive # all certificates (symlinks from /live points here)
