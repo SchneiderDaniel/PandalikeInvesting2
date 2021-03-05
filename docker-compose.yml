@@ -16,15 +16,15 @@ services:
     expose:
       - 8080
     depends_on:
-      - postgres
+      - postgres_db
     links:
-      - postgres:postgres
+      - postgres_db:postgres_db
     networks:
       - u-online
 
-  postgres:
+  postgres_db:
     image: postgres
-    container_name: postgres
+    container_name: postgres_db
     restart: always
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
