@@ -8,6 +8,8 @@ services:
       - flask.env
     container_name: flask_webapp
     restart: always
+    environment: 
+            - APP_NAME=flask_webapp
     volumes:
       - ./flask_webapp/reqlog:/tmp/reqlog
       - ./flask_webapp/errlog:/tmp/errlog
