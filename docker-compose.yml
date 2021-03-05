@@ -16,13 +16,15 @@ services:
     expose:
       - 8080
     depends_on:
-      - postgres_db
-    # networks:
-    #   - u-online
+      - postgres
+    links:
+      - postgres:postgres
+    networks:
+      - u-online
 
   postgres_db:
     image: postgres
-    container_name: postgres_db
+    container_name: postgres
     restart: always
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -30,8 +32,8 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - ./postgres_db/data:/var/lib/postgresql/data
-    # networks:
-    #   - u-online
+    networks:
+      - u-online
 
   nginx_web_server:
     build: ./nginx
@@ -47,11 +49,11 @@ services:
       - /etc/letsencrypt/archive:/etc/letsencrypt/archive # all certificates (symlinks from /live points here)
     depends_on:
       - flask_webapp
-    # networks:
-    #   - u-online
+    networks:
+      - u-online
 
 
-# #Docker Networks
-# networks:
-#   u-online:
-#     driver: bridge
+#Docker Networks
+networks:
+  u-online:
+    driver: bridge
