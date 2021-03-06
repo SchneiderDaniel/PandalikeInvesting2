@@ -23,13 +23,13 @@
       <a href="#toolsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-wrench"></i> Tools </a>
       <ul class="collapse list-unstyled" id="toolsSubmenu">
           <li>
-              <a href="/tools/app1">Rebalancing</a>
+              <a href="{{ url_for( 'DashExample_blueprint.app1_template') }}">Rebalancing</a>
           </li>
           <li>
-              <a href="/tools/app2">Correlation</a>
+              <a href="{{ url_for( 'DashExample_blueprint.app2_template') }}">Correlation</a>
           </li>
           <li>
-              <a href="/tools/app2">More to come</a>
+              <a href="{{ url_for( 'DashExample_blueprint.app1_template') }}">More to come</a>
           </li>
       </ul>
   </li>

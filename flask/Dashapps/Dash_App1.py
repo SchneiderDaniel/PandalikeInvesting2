@@ -126,6 +126,12 @@ def convertToString(value_list):
             result.append("{:.2f}".format(value_list[i]))
     return result
 
+def convertToStringNoSign(value_list):
+    result = []
+    for i in range(len(value_list)):
+        result.append("{:.2f}".format(value_list[i]))
+    return result
+
 def Add_Dash(server):
     app = Dash(server=server, url_base_pathname=url_base, external_stylesheets = [dbc.themes.BOOTSTRAP], meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}])
     apply_layout_with_auth(app, layout)
@@ -158,7 +164,7 @@ def Add_Dash(server):
         resutlText = []
         resutlText.append("The result is ready.")
 
-        return new_Values, convertToString(changes), convertToString(pieces), resutlText
+        return convertToStringNoSign(new_Values), convertToString(changes), convertToString(pieces), resutlText
 
     @app.callback(
         [Output(component_id={'type': 'dynamic-sum', 'index': MATCH}, component_property='children')],
