@@ -11,7 +11,7 @@
 <script type="text/javascript">
     var fn = function () {
         console.log(document.cookie);
-        document.cookie = "my_cookie_consent=true;path='/'";
+        document.cookie = "my_cookie_consent=true;path='/';domain=pandalikeinvesting.com";
         document.getElementById('cookie-consent-container').hidden = true;
     };
     document.getElementById('my_cookie_consent').onclick = fn;
