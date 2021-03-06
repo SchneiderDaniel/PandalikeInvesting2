@@ -6,13 +6,14 @@
     This site uses cookies and monitoring tools to offer you a better browsing experience. 
     For more information refer to our <a href="{{ url_for( 'base_blueprint.privacy') }}">Privacy Policy </a>. 
     With the usage of this side you agree to this.&nbsp;&nbsp;
-    <button id="cookie-consent" class="btn btn-primary btn-sm"> <i class="fas fa-check"></i>&nbsp;&nbsp; I agree</button>
+    <button id="my_cookie_consent" class="btn btn-primary btn-sm"> <i class="fas fa-check"></i>&nbsp;&nbsp; I agree</button>
 </div>
-<script>
+<script type="text/javascript">
     var fn = function () {
-        document.cookie = "cookie_consent=true";
+        console.log(document.cookie);
+        document.cookie = "my_cookie_consent=true;path='/'";
         document.getElementById('cookie-consent-container').hidden = true;
     };
-    document.getElementById('cookie-consent').onclick = fn;
+    document.getElementById('my_cookie_consent').onclick = fn;
 </script>
 {% endif %}

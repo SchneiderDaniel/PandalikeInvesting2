@@ -81,7 +81,7 @@ def app_context(app):
         injections = dict()
 
         def cookies_check():
-            value = request.cookies.get('cookie_consent')
+            value = request.cookies.get('my_cookie_consent')
             return value == 'true'
         injections.update(cookies_check=cookies_check)
 
