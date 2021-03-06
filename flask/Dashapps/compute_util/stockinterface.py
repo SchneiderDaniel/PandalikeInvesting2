@@ -52,24 +52,17 @@ def getCurrencyToTicker(ticker):
     return currency
 
 
-
-def getCorrelationDiagram(ticker1, ticker2):
-    
-    result = [['2017-01-01',0.1],['2018-01-01',0.8],['2018-01-01',0.5] ]
-
-    return result
-
-
-
-def getPortfolioCorrelation(positions, ticker, filterStart = dt.datetime(1971,1,1), filterEnd = dt.datetime.now(), daily=True):
+def getPortfolioCorrelation(tickers,percents, ticker, filterStart = dt.datetime(1971,1,1), filterEnd = dt.datetime.now(), daily=True):
 
     # print('Start get Portfolio Correlation')    
     dfList = []
 
-    for p in positions:
-        updateStockData(p.ticker)
-        stockdataPath = os.path.join(current_app.root_path, 'static/resources/stockdata/' + p.ticker + '.pkl')
-        dfToAdd = pd.read_pickle(stockdataPath)
+    for p in tickers:
+        # updateStockData(p.ticker)
+        # stockdataPath = os.path.join(current_app.root_path, 'static/resources/stockdata/' + p.ticker + '.pkl')
+        # dfToAdd = pd.read_pickle(stockdataPath)
+        dfToAdd = web.DataReader(p, 'yahoo', dt.datetime(1971,1,1),  dt.datetime.now()) 
+
         dfToAdd.drop(dfToAdd.columns.difference(['Adj Close']), 1, inplace=True)
         # print(p.ticker + ' df')
         # print(dfToAdd)
@@ -99,13 +92,13 @@ def getPortfolioCorrelation(positions, ticker, filterStart = dt.datetime(1971,1,
 
     # print('Merge0')
 
-    updateStockData(ticker)
+    # updateStockData(ticker)
     # print('Merge1')    
     # print(merge)
 
 
-    stockdataPathBench = os.path.join(current_app.root_path, 'static/resources/stockdata/' + ticker + '.pkl')
-    dfBench = pd.read_pickle(stockdataPathBench)
+    # stockdataPathBench = os.path.join(current_app.root_path, 'static/resources/stockdata/' + ticker + '.pkl')
+    dfBench =  web.DataReader(ticker, 'yahoo', dt.datetime(1971,1,1),  dt.datetime.now()) 
 
     # print('dfBench: ' + ticker )    
     # print(dfBench)
@@ -138,7 +131,7 @@ def getPortfolioCorrelation(positions, ticker, filterStart = dt.datetime(1971,1,
     # merge = merge.apply(lambda x: x/x.shift(1)-1)
     # merge.dropna(inplace=True)
 
-    for i in range(len(positions)+1):
+    for i in range(len(tickers)+1):
         divisor= merge[merge.columns[i]].iloc[0]
         merge[merge.columns[i]] = merge[merge.columns[i]]/divisor
 
@@ -146,8 +139,8 @@ def getPortfolioCorrelation(positions, ticker, filterStart = dt.datetime(1971,1,
     # print(merge)
 
 
-    for i in range(len(positions)):
-        merge[merge.columns[i]] = (0.01*positions[i].percent)*merge[merge.columns[i]]
+    for i in range(len(percents)):
+        merge[merge.columns[i]] = (0.01*percents[i])*merge[merge.columns[i]]
 
 
     merge['Portfolio'] = merge.drop('Benchmark', axis=1).sum(axis=1)
@@ -272,75 +265,3 @@ def getCorrelationMatrix(tickers, filterStart = dt.datetime(1971,1,1), filterEnd
     result= result.round(4)
 
     return result, evaluatedFrom, evaluatedTo
-
-def updateStockData(ticker):
-
-    stockdataPath = os.path.join(current_app.root_path, 'static/resources/stockdata/' + ticker + '.pkl')
-    if (os.path.exists(stockdataPath)):
-        # print('Stock already saved. Update...',  file=sys.stderr)
-        saveStockDataAlreadyExisting(ticker)
-    else:
-        # print('Start saving stock from Scratch',  file=sys.stderr)
-        saveStockDataFromScratch(ticker)
-
-    
-def saveStockDataFromScratch(ticker):
-    stockdataPath = os.path.join(current_app.root_path, 'static/resources/stockdata/' + ticker + '.pkl')
-    stockdataPathCSV = os.path.join(current_app.root_path, 'static/resources/stockdata/' + ticker + '.csv')
-
-    start = dt.datetime(1971,1,1)
-    end = dt.datetime.now()
-    # end = dt.datetime(2020,2,1)
-    df = web.DataReader(ticker, 'yahoo', dt.datetime(1971,1,1),  dt.datetime.now())
-       
-    print(stockdataPath,  file=sys.stderr)
-
-    df.to_pickle(stockdataPath)
-    # df.to_csv(stockdataPathCSV)
-
-    
-
-def saveStockDataAlreadyExisting(ticker):
-
-    # print('Stock existing')
-    stockdataPath = os.path.join(current_app.root_path, 'static/resources/stockdata/' + ticker + '.pkl')
-    stockdataPathCSV = os.path.join(current_app.root_path, 'static/resources/stockdata/' + ticker + '.csv')
-    df = pd.read_pickle(stockdataPath)
-
-
-
-    
-    lastRecord = df.index[-1]
-    endNow = dt.datetime.now()
-
-    duration = endNow-lastRecord
-
-    # print('lastRecord')
-    # print (lastRecord)
-    # print('endNow')
-    # print (endNow)
-
-    # print('Duration')
-    # print (duration)
-
-
-    if (duration.days>4):
-        saveStockDataFromScratch(ticker)
-
-        # df2 = web.DataReader(ticker, 'yahoo', df.index[-1], endNow)
-
-    
-        # df2.drop(df.index[-1],inplace=True)
-
-        # print('Update stock DATA!!!!!')
-        # print('OLD',  file=sys.stderr)
-        # print(df,  file=sys.stderr)
-        # print('Add',  file=sys.stderr)
-        # print(df2,  file=sys.stderr)
-        # df = df.append(df2)
-
-        # df.to_pickle(stockdataPath)
-    # df.to_csv(stockdataPathCSV)
-
-    
-    # print('Stock writen')
