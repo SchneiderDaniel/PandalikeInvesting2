@@ -75,15 +75,15 @@ def cheap_card():
                             children=[
                                 html.Div("Transaction fee (%)"),
                                 dbc.Input(type="number", id="edit_cheap_trans_fee_per", value='0', placeholder="Enter the performance "),
-                                html.Div("Transaction fee (abs)"),
-                                dbc.Input(type="number", id="edit_cheap_trans_fee_abs", value='1', placeholder="Enter the investment ")
+                                html.Div("Other costs (%, pa)"),
+                                dbc.Input(type="number", id="edit_cheap_other_per", value='0', placeholder="Enter the duration"),
                             ],
                             width=6
                         ),
                         dbc.Col( 
                             children=[
-                                html.Div("Other costs (%, pa)"),
-                                dbc.Input(type="number", id="edit_cheap_other_per", value='0', placeholder="Enter the duration"),
+                                html.Div("Transaction fee (abs)"),
+                                dbc.Input(type="number", id="edit_cheap_trans_fee_abs", value='1', placeholder="Enter the investment "),
                                 html.Div("Other costs (abs, pa)"),
                                 dbc.Input(type="number", id="edit_cheap_other_abs", value='500', placeholder="Enter the investment ")
                             ],
@@ -118,8 +118,8 @@ def exp_card():
                             children=[
                                 html.Div("Transaction fee (%)"),
                                 dbc.Input(type="number", id="edit_exp_trans_fee_per", value='0', placeholder="Enter the performance "),
-                                html.Div("Transaction fee (abs)"),
-                                dbc.Input(type="number", id="edit_exp_trans_fee_abs", value='1', placeholder="Enter the investment "),
+                                html.Div("Other costs (%, pa)"),
+                                dbc.Input(type="number", id="edit_exp_other_per", value='0', placeholder="Enter the duration"),
                                 html.Div("Outperformance (%, pa)"),
                                 dbc.Input(type="number", id="edit_outperf", value='2.2', placeholder="Enter the outperformance ")
                                 
@@ -128,8 +128,8 @@ def exp_card():
                         ),
                         dbc.Col( 
                             children=[
-                                html.Div("Other costs (%, pa)"),
-                                dbc.Input(type="number", id="edit_exp_other_per", value='0', placeholder="Enter the duration"),
+                                html.Div("Transaction fee (abs)"),
+                                dbc.Input(type="number", id="edit_exp_trans_fee_abs", value='1', placeholder="Enter the investment "),
                                 html.Div("Other costs (abs, pa)"),
                                 dbc.Input(type="number", id="edit_cheap_exp_abs", value='500', placeholder="Enter the investment "),                                
                             ],
