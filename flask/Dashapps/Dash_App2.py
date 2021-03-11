@@ -86,7 +86,7 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor
     ),
     html.Br(),
     html.Br(),
-    dbc.Button("Compute (Takes some time)", id="compute-button", color="primary", block=True),
+    dbc.Button("Compute (Takes a few minutes!)", id="compute-button", color="primary", block=True),
     html.Span(id="compute-output", style={"vertical-align": "middle","font-style": "italic" }),
     html.Br(),
     html.Br(),
@@ -286,7 +286,7 @@ def getAllPortfolioCorrelation(tickers,percents,start,end):
 
     # print (pfResults)
     result = pd.DataFrame.from_records(pfResults)
-    result.columns = ['Corr. to:', 'Intervall', 'Correlation', 'from', 'to']
+    result.columns = ['Benchmark:', 'Intervall', 'Correlation', 'from', 'to']
 
     return result
 
