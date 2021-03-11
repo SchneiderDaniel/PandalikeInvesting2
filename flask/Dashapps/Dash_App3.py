@@ -31,18 +31,18 @@ def basic_card():
                         dbc.Col( 
                             children=[
                                 html.Div("Benchmark Perf. (%, pa)"),
-                                dbc.Input(type="number", value='5.5', placeholder="Enter the performance "),
+                                dbc.Input(type="number", id="edit_perf", value='5.5', placeholder="Enter the performance "),
                                 html.Div("One Time Investment"),
-                                dbc.Input(type="number", value='10000', placeholder="Enter the investment ")
+                                dbc.Input(type="number", id="edit_onetime_invest", value='10000', placeholder="Enter the investment ")
                             ],
                             width=6
                         ),
                         dbc.Col( 
                             children=[
                                 html.Div("Investment Duration (years)"),
-                                dbc.Input(type="number", value='30', placeholder="Enter the duration"),
+                                dbc.Input(type="number", id="edit_duration", value='30', placeholder="Enter the duration"),
                                 html.Div("Monthly Investment"),
-                                dbc.Input(type="number", value='500', placeholder="Enter the investment ")
+                                dbc.Input(type="number", id="edit_month_invest", value='500', placeholder="Enter the investment ")
                             ],
                             width=6
                         ),
@@ -63,7 +63,7 @@ def cheap_card():
                         dbc.Col( 
                             children=[
                                 html.Div("Total Expense Ratio - TER (%, pa)"),
-                                dbc.Input(type="number", value='0.25', placeholder="Enter the perTERformance "),
+                                dbc.Input(type="number", id="edit_cheap_ter", value='0.25', placeholder="Enter the perTERformance "),
                             ],
                             width=6
                         ),
@@ -74,18 +74,18 @@ def cheap_card():
                         dbc.Col( 
                             children=[
                                 html.Div("Transaction fee (%)"),
-                                dbc.Input(type="number", value='0', placeholder="Enter the performance "),
+                                dbc.Input(type="number", id="edit_cheap_trans_fee_per", value='0', placeholder="Enter the performance "),
                                 html.Div("Transaction fee (abs)"),
-                                dbc.Input(type="number", value='1', placeholder="Enter the investment ")
+                                dbc.Input(type="number", id="edit_cheap_trans_fee_abs", value='1', placeholder="Enter the investment ")
                             ],
                             width=6
                         ),
                         dbc.Col( 
                             children=[
                                 html.Div("Other costs (%, pa)"),
-                                dbc.Input(type="number", value='0', placeholder="Enter the duration"),
+                                dbc.Input(type="number", id="edit_cheap_other_per", value='0', placeholder="Enter the duration"),
                                 html.Div("Other costs (abs, pa)"),
-                                dbc.Input(type="number", value='500', placeholder="Enter the investment ")
+                                dbc.Input(type="number", id="edit_cheap_other_abs", value='500', placeholder="Enter the investment ")
                             ],
                             width=6
                         ),
@@ -106,7 +106,7 @@ def exp_card():
                         dbc.Col( 
                             children=[
                                 html.Div("Total Expense Ratio - TER (%, pa)"),
-                                dbc.Input(type="number", value='0.25', placeholder="Enter the performance "),
+                                dbc.Input(type="number", id="edit_exp_ter", value='0.25', placeholder="Enter the performance "),
                             ],
                             width=6
                         ),
@@ -117,11 +117,11 @@ def exp_card():
                         dbc.Col( 
                             children=[
                                 html.Div("Transaction fee (%)"),
-                                dbc.Input(type="number", value='0', placeholder="Enter the performance "),
+                                dbc.Input(type="number", id="edit_exp_trans_fee_per", value='0', placeholder="Enter the performance "),
                                 html.Div("Transaction fee (abs)"),
-                                dbc.Input(type="number", value='1', placeholder="Enter the investment "),
+                                dbc.Input(type="number", id="edit_exp_trans_fee_abs", value='1', placeholder="Enter the investment "),
                                 html.Div("Outperformance (%, pa)"),
-                                dbc.Input(type="number", value='2.2', placeholder="Enter the outperformance ")
+                                dbc.Input(type="number", id="edit_outperf", value='2.2', placeholder="Enter the outperformance ")
                                 
                             ],
                             width=6
@@ -129,9 +129,9 @@ def exp_card():
                         dbc.Col( 
                             children=[
                                 html.Div("Other costs (%, pa)"),
-                                dbc.Input(type="number", value='0', placeholder="Enter the duration"),
+                                dbc.Input(type="number", id="edit_exp_other_per", value='0', placeholder="Enter the duration"),
                                 html.Div("Other costs (abs, pa)"),
-                                dbc.Input(type="number", value='500', placeholder="Enter the investment "),                                
+                                dbc.Input(type="number", id="edit_cheap_exp_abs", value='500', placeholder="Enter the investment "),                                
                             ],
                             width=6
                         ),
