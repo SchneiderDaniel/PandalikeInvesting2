@@ -121,7 +121,7 @@ def exp_card():
                                 html.Div("Other costs (%, pa)"),
                                 dbc.Input(type="number", id="edit_exp_other_per", value='0', placeholder="Enter the duration"),
                                 html.Div("Outperformance (%, pa)"),
-                                dbc.Input(type="number", id="edit_outperf", value='2.2', placeholder="Enter the outperformance ")
+                                dbc.Input(type="number", id="edit_outperf", value='1.8', placeholder="Enter the outperformance ")
                                 
                             ],
                             width=6
@@ -182,6 +182,7 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor
         'backgroundColor': colors['background']
     }),
     html.Br(),
+    html.Hr(className="my-2"),
     html.Br(),
     html.Div(children=warning_card(), style={
         'textAlign': 'left',
