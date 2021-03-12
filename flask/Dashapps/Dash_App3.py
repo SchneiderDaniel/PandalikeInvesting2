@@ -11,6 +11,7 @@ import plotly.express as px
 import plotly.graph_objs as go
 from .dash_base import warning_card, colors
 import dash_table
+from datetime import datetime
 
 url_base = '/dash/app3/'
 
@@ -131,7 +132,7 @@ def exp_card():
                                 html.Div("Transaction fee (abs)"),
                                 dbc.Input(type="number", id="edit_exp_trans_fee_abs", value='1', placeholder="Enter the investment "),
                                 html.Div("Other costs (abs, pa)"),
-                                dbc.Input(type="number", id="edit_cheap_exp_abs", value='500', placeholder="Enter the investment "),                                
+                                dbc.Input(type="number", id="edit_exp_other_abs", value='500', placeholder="Enter the investment "),                                
                             ],
                             width=6
                         ),
@@ -184,6 +185,10 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor
     html.Br(),
     html.Hr(className="my-2"),
     html.Br(),
+    dcc.Graph(id='graph'),
+    html.Br(),
+    html.Hr(className="my-2"),
+    html.Br(),
     html.Div(children=warning_card(), style={
         'textAlign': 'left',
         'color': colors['text'],
@@ -195,5 +200,47 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor
 def Add_Dash(server):
     app = Dash(server=server, url_base_pathname=url_base, external_stylesheets = [dbc.themes.BOOTSTRAP], meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}])
     apply_layout_with_auth(app, layout)
+
+
+    @app.callback(
+        Output('graph', 'figure'),
+        [
+        Input('edit_perf', 'value'),
+        Input('edit_onetime_invest', 'value'),
+        Input('edit_duration', 'value'),
+        Input('edit_month_invest', 'value'),
+        Input('edit_cheap_ter', 'value'),
+        Input('edit_cheap_trans_fee_per', 'value'),
+        Input('edit_cheap_other_per', 'value'),
+        Input('edit_cheap_trans_fee_abs', 'value'),
+        Input('edit_cheap_other_abs', 'value'),
+        Input('edit_exp_ter', 'value'),
+        Input('edit_exp_trans_fee_per', 'value'),
+        Input('edit_exp_other_per', 'value'),
+        Input('edit_outperf', 'value'),
+        Input('edit_exp_trans_fee_abs', 'value'),
+        Input('edit_exp_other_abs', 'value')
+        ]
+    )
+    def display_tickers(perf,onetime_invest,duration,month_invest,cheap_ter,cheap_trans_fee_per,cheap_other_per,
+    cheap_trans_fee_abs,cheap_other_abs,exp_ter,exp_trans_fee_per,exp_other_per,outperf,exp_trans_fee_abs,exp_other_abs):
+        duration_months = int(duration)*12
+        start_eval = datetime.now()
+        start_eval = start_eval.replace(minute=0, hour=0, second=0, microsecond=0)
+
+        dates = pd.date_range(start=start_eval, periods=duration_months, freq='M')
+        
+
+        result = []
+        for i in range(duration_months):
+            result.append(i)
+
+
+
+        df = pd.Series(result,index=dates)
+        print(df)
+        
+        fig = go.Figure(data=[go.Scatter(x=[1, 2, 3], y=[4, 1, 2])])
+        return fig
 
     return app.server
