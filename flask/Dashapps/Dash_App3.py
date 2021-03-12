@@ -12,13 +12,14 @@ import plotly.graph_objs as go
 from .dash_base import warning_card, colors
 import dash_table
 from datetime import datetime
+import numpy as np
 
 url_base = '/dash/app3/'
 
 def description_card():
     return html.Div(
         id="description_card",
-        children="The question about active vs passive investments is present in many discussions about investing. What is true for most instances is, that an active investment fund is often more expensive than their passive counterparts (the ones that are based on the same benchmark). The question that this tool wants to answer is, how much outperformance (%, pa) does the more expensive investment need, to get close to their benchmark index, as well as to the cheaper investment, e.g. an index fund. The performance is computed on a monthly basis.",
+        children="The question about active vs passive investments is present in many discussions about investing. What is true for most instances is, that an active investment fund is often more expensive than their passive counterparts (both investments based on the same! benchmark). The question that this tool wants to answer is, how much outperformance (%, pa) does the more expensive investment need, to get close to their benchmark index, as well as to the cheaper investment, e.g. an index fund. The performance is computed on a monthly basis.",
     style={
         'backgroundColor': colors['background'],
     })
@@ -152,14 +153,14 @@ def result_card():
                     dbc.Col( 
                             children=[
                                 html.Div("Benchmark"),
-                                html.Span(id="benchmark-output", style={"vertical-align": "middle","font-style": "italic" }),
+                                html.Span(id="benchmark-output", style={"vertical-align": "middle","font-style": "italic","color" : "blue" }),
                             ],
                             width=4
                         ),
                     dbc.Col( 
                             children=[
                                 html.Div("Cheaper"), 
-                                html.Span(id="cheaper-output", style={"vertical-align": "middle","font-style": "italic" }),
+                                html.Span(id="cheaper-output", style={"vertical-align": "middle","font-style": "italic","color" : "red" }),
                                 
                             ],
                             width=4
@@ -167,7 +168,7 @@ def result_card():
                     dbc.Col( 
                             children=[
                                 html.Div("Other"),
-                                html.Span(id="other-output", style={"vertical-align": "middle","font-style": "italic" }),
+                                html.Span(id="other-output", style={"vertical-align": "middle","font-style": "italic","color" : "green" }),
                                 
                             ],
                             width=4
@@ -361,19 +362,58 @@ def Add_Dash(server):
         # df.insert(1,'Cheap', resultCheap)
         # df.insert(2,'Other', resultExp)
 
-        # df = pd.DataFrame(
-        #             {
-        #             'Dates' : dates,
-        #             'Reference': resultReference,
-        #             'Cheap': resultCheap,
-        #             'Other': resultExp                    
-        #             })
+        str_res_ref = "%.2f" % resultReference[len(resultReference)-1]
+        str_res_cheap =  "%.2f" % resultCheap[len(resultCheap)-1]
+        str_res_exp  =  "%.2f" %  resultExp[len(resultExp)-1]
+
+
+        resultReference = list(np.around(np.array(resultReference),0))
+        resultCheap = list(np.around(np.array(resultCheap),0))
+        resultExp = list(np.around(np.array(resultExp),0))
+
+        df = pd.DataFrame(
+                    {
+                    'Dates' : dates,
+                    'Reference': resultReference,
+                    'Cheap': resultCheap,
+                    'Other': resultExp                    
+                    })
 
         # df.set_index('Dates', inplace=True)
         # df['Cheap'] = resultCheap
         # df['Other'] = resultExp
+        pd.set_option('display.max_rows', None)  # or 1000
         # print(df)
-        fig = go.Figure()
+
+
+        # Build graph
+        layoutGraph = go.Layout(
+            title="Performance Comparison",    
+            plot_bgcolor="#FFFFFF",
+            hovermode="x",
+            hoverdistance=100, # Distance to show hover label of data point
+            spikedistance=1000, # Distance to show spike
+            xaxis=dict(
+                title="time",
+                linecolor="#BCCCDC",
+                showspikes=True, # Show spike line for X-axis
+                # Format spike
+                spikethickness=2,
+                spikedash="dot",
+                spikecolor="#999999",
+                spikemode="across",
+            ),
+            yaxis=dict(
+                title="value",
+                linecolor="#BCCCDC",
+                tickformat=",r"
+            )
+        )
+
+
+
+
+        fig = go.Figure(layout = layoutGraph)
         fig.add_trace(go.Scatter(x=dates, y=resultReference,
                     mode='lines',
                     name='Benchmark'))
@@ -384,9 +424,11 @@ def Add_Dash(server):
                     mode='lines',
                     name='Other'))
 
+     
 
+        # print(str_res_ref)
 
         # fig = px.line(df, x='Dates')
-        return fig, "Testi1","Testi2","Testi3"
+        return fig, str_res_ref,str_res_cheap,str_res_exp
 
     return app.server
