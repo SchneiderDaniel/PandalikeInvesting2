@@ -15,7 +15,7 @@ import numpy as np
 import pandas as pd
 from .dash_base import warning_card, colors
 import datetime as dt 
-from .compute_util.stockinterface import isTickerValid, getCorrelationMatrix, getPortfolioCorrelation
+from .compute_util.stockinterface import isTickerValid, getCorrelationMatrix, getPortfolioCorrelation,getCorrelationMatrix_List, getPortfolioCorrelation_List, getTickerDataframesList, getTickerDataframe
 from flask import request
 import locale
 
@@ -84,7 +84,7 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor
         min_date_allowed=dt.datetime(1971,1,1),
         max_date_allowed= dt.datetime.now(),
         initial_visible_month=dt.datetime.now(),
-        start_date=dt.datetime(2018,1,1),
+        start_date=dt.datetime(2019,1,1),
         end_date=dt.datetime.now()
     ),
     html.Br(),
@@ -242,6 +242,68 @@ def isValid_percents(percent_values):
     if (sum==100): return 1
     return 2
 
+
+def getAllPortfolioCorrelation_List(dfList,tickers,percents,start,end):
+    benchTickers = []
+    benchTickers.append('IWDA.AS')
+    benchTickers.append('SPY')
+    benchTickers.append('EXSA.MI')
+
+    benchName = []
+    benchName.append('MSCI World')
+    benchName.append('S&P 500')
+    benchName.append('Stoxx Europe 600')
+
+    benchDataframes = []
+    benchDataframes.append(getTickerDataframe(benchTickers[0]))
+    benchDataframes.append(getTickerDataframe(benchTickers[1]))
+    benchDataframes.append(getTickerDataframe(benchTickers[2]))
+
+
+
+    pfResults = []
+    for i in range(len(benchTickers)):
+        pfCorr=[]
+        pfCorr.append(benchName[i])
+        pfCorr.append('Daily')
+        pfCorrRes = getPortfolioCorrelation_List(dfList,percents,benchDataframes[i])
+        for a in pfCorrRes:
+            pfCorr.append(a)
+     
+        pfCorrMonthly = []
+        pfCorrMonthly.append(benchName[i])
+        pfCorrMonthly.append('Monthly')
+        pfCorrMonthlyRes = getPortfolioCorrelation_List(dfList,percents,benchDataframes[i], daily=False)
+        for a in pfCorrMonthlyRes:
+            pfCorrMonthly.append(a)
+        
+        pfCorrCustom = []
+        pfCorrCustom.append(benchName[i])
+        pfCorrCustom.append('Daily')
+        pfCorrCustomRes = getPortfolioCorrelation_List(dfList,percents,benchDataframes[i], start,end)
+        for a in pfCorrCustomRes:
+            pfCorrCustom.append(a)
+        
+        pfCorrCustomMonthly = []
+        pfCorrCustomMonthly.append(benchName[i])
+        pfCorrCustomMonthly.append('Monthly')
+        pfCorrCustomMonthlyRes = getPortfolioCorrelation_List(dfList,percents,benchDataframes[i],start,end, daily=False)
+        for a in pfCorrCustomMonthlyRes:
+            pfCorrCustomMonthly.append(a)
+      
+
+        pfResults.append(pfCorr)
+        pfResults.append(pfCorrMonthly)
+        pfResults.append(pfCorrCustom)
+        pfResults.append(pfCorrCustomMonthly)
+
+    # print (pfResults)
+    result = pd.DataFrame.from_records(pfResults)
+    result.columns = ['Benchmark:', 'Intervall', 'Correlation', 'from', 'to']
+
+    return result
+
+
 def getAllPortfolioCorrelation(tickers,percents,start,end):
     benchTickers = []
     benchTickers.append('IWDA.AS')
@@ -320,7 +382,7 @@ def Add_Dash(server):
         Input('my-date-picker-range', 'end_date')]
     )
     def compute(ticker_values, percent_values,n_clicks,start_date, end_date):    
-        print ('Start Correlation Computation')
+        
 
         request_locale  = request.accept_languages.best_match(['en_US','de_DE'])
         if (request_locale=='en_US'): 
@@ -346,13 +408,17 @@ def Add_Dash(server):
             if not result_tickers[1]:
                 return 'Ticker at position {} cannot be found on yahoo'.format(result_tickers[0]+1), df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max
 
-            corr_result_max = getCorrelationMatrix(ticker_values, daily=True)
-            corr_result_max_monthly = getCorrelationMatrix(ticker_values, daily=False)
+            print ('Start Correlation Computation')
+
+            dfList = getTickerDataframesList(ticker_values)
+
+            corr_result_max = getCorrelationMatrix_List(dfList, daily=True)
+            corr_result_max_monthly = getCorrelationMatrix_List(dfList, daily=False)
 
             # print(start_date)
             # print(end_date)
-            corr_result_max_c = getCorrelationMatrix(ticker_values, filterStart=start_date, filterEnd=end_date, daily=True)
-            corr_result_max_monthly_c = getCorrelationMatrix(ticker_values, filterStart=start_date, filterEnd=end_date, daily=False)
+            corr_result_max_c = getCorrelationMatrix_List(dfList, filterStart=start_date, filterEnd=end_date, daily=True)
+            corr_result_max_monthly_c = getCorrelationMatrix_List(dfList, filterStart=start_date, filterEnd=end_date, daily=False)
             
             # print(corr_result_max)
             df_corr_result_max = pd.DataFrame(data=corr_result_max[0], index=ticker_values, columns=ticker_values)
@@ -368,7 +434,7 @@ def Add_Dash(server):
             df_corr_result_max_monthly_c.insert(loc=0, column='Ticker', value=ticker_values)
 
             correlationsDF = get_dummy_df()
-            if (result_percents==1): correlationsDF = getAllPortfolioCorrelation(ticker_values,percent_values,start_date,end_date)
+            if (result_percents==1): correlationsDF = getAllPortfolioCorrelation_List(dfList,ticker_values,percent_values,start_date,end_date)
 
             # print(df_corr_result_max)
             columns_corr_result_max = [{'name': col, 'id': col, 'type': 'numeric', 'format' : dict(specifier='.2f', locale=dict(decimal=sep_locale))} for col in df_corr_result_max.columns]
