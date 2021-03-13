@@ -371,9 +371,9 @@ def Add_Dash(server):
     
         request_locale  = request.accept_languages.best_match(['en_US','de_DE'])
         if (request_locale=='en_US'): 
-             dash_locale = 'en'
-             sep_locale = "."
-             request_locale_utf8 = 'en_US.utf8'
+            dash_locale = 'en'
+            sep_locale = "."
+            request_locale_utf8 = 'en_US.utf8'
         else:
             dash_locale = 'de'
             sep_locale = ","
