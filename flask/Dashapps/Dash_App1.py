@@ -11,6 +11,8 @@ import plotly.express as px
 import plotly.graph_objs as go
 from .dash_base import warning_card, colors
 import dash_table
+from flask import request
+import locale
 
 url_base = '/dash/app1/'
 

@@ -8,6 +8,7 @@ import dash_html_components as html
 
 import dash
 import dash_table
+from dash_table.Format import Format, Group, Prefix, Scheme, Symbol
 import dash_bootstrap_components as dbc
 import plotly.graph_objs as go
 import numpy as np
@@ -15,6 +16,8 @@ import pandas as pd
 from .dash_base import warning_card, colors
 import datetime as dt 
 from .compute_util.stockinterface import isTickerValid, getCorrelationMatrix, getPortfolioCorrelation
+from flask import request
+import locale
 
 # from ./compute_util/stockinterface import isTickerValid
 
@@ -108,11 +111,13 @@ layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor
             # 'fontWeight': 'bold'
         },
         style_cell={
-            'font-family':'"Poppins", sans-serif'
+            'font-family':'"Poppins", sans-serif',
+            
         },
         id='compute-table-daily',
         columns=[{"name": i, "id": i} for i in df_corr.columns],
-        data=df_corr.to_dict('records'),
+        data=df_corr.to_dict('records')
+        
     ),
     html.Br(),
     html.P(children='Monthly - Maximum Timeframe',style={"font-style": "italic" }),
@@ -315,10 +320,20 @@ def Add_Dash(server):
         Input('my-date-picker-range', 'end_date')]
     )
     def compute(ticker_values, percent_values,n_clicks,start_date, end_date):    
+        
+        request_locale  = request.accept_languages.best_match(['en_US','de_DE'])
+        if (request_locale=='en_US'): 
+             dash_locale = 'en'
+             sep_locale = "."
+        else:
+            dash_locale = 'de'
+            sep_locale = ","
+
+
         changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
         msg = ""
         df_corr_result_max = get_dummy_df()
-        columns_corr_result_max = [{'name': col, 'id': col} for col in df_corr_result_max.columns]
+        columns_corr_result_max = [{'name': col, 'id': col, 'type': 'numeric', 'format' : dict(specifier='.2f', locale=dict(decimal=sep_locale)) } for col in df_corr_result_max.columns]
         if 'compute-button' in changed_id:
 
             if len(ticker_values)<2: return 'You need at least 2 tickers.', df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max
@@ -355,12 +370,12 @@ def Add_Dash(server):
             if (result_percents==1): correlationsDF = getAllPortfolioCorrelation(ticker_values,percent_values,start_date,end_date)
 
             # print(df_corr_result_max)
-            columns_corr_result_max = [{'name': col, 'id': col} for col in df_corr_result_max.columns]
-            columns_corr_result_max_monthly = [{'name': col, 'id': col} for col in df_corr_result_max_monthly.columns]
-            columns_corr_result_max_c = [{'name': col, 'id': col} for col in df_corr_result_max_c.columns]
-            columns_corr_result_max_monthly_c = [{'name': col, 'id': col} for col in df_corr_result_max_monthly_c.columns]
+            columns_corr_result_max = [{'name': col, 'id': col, 'type': 'numeric', 'format' : dict(specifier='.2f', locale=dict(decimal=sep_locale))} for col in df_corr_result_max.columns]
+            columns_corr_result_max_monthly = [{'name': col, 'id': col, 'type': 'numeric', 'format' : dict(specifier='.2f', locale=dict(decimal=sep_locale))} for col in df_corr_result_max_monthly.columns]
+            columns_corr_result_max_c = [{'name': col, 'id': col, 'type': 'numeric', 'format' : dict(specifier='.2f', locale=dict(decimal=sep_locale))} for col in df_corr_result_max_c.columns]
+            columns_corr_result_max_monthly_c = [{'name': col, 'id': col, 'type': 'numeric', 'format' : dict(specifier='.2f', locale=dict(decimal=sep_locale))} for col in df_corr_result_max_monthly_c.columns]
 
-            columns_correlationsDF = [{'name': col, 'id': col} for col in correlationsDF.columns]
+            columns_correlationsDF = [{'name': col, 'id': col, 'type': 'numeric', 'format' : dict(specifier='.2f', locale=dict(decimal=sep_locale))} for col in correlationsDF.columns]
 
             
 
@@ -395,7 +410,7 @@ def Add_Dash(server):
                         ),
                         dbc.Col( 
                             children=[
-                                html.Div("Percent:"),
+                                html.Div("Percent (%):"),
                                 dbc.Input(type="number", value='0', placeholder="Enter %",
                                 id={
                                     'type': 'dynamic-percent',

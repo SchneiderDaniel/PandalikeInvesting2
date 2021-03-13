@@ -68,3 +68,4 @@ You need to set the following env. variables.
 [Dynamic Callback Docu](https://dash.plotly.com/pattern-matching-callbacks)
 [uwsgi example](https://www.techatbloomberg.com/blog/configuring-uwsgi-production-deployment/)
 [string formattting](https://mkaz.blog/code/python-string-format-cookbook/)
+[dash formatting](https://dash.plotly.com/datatable/data-formatting)
