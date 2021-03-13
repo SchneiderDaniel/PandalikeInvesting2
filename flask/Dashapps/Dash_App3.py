@@ -383,7 +383,7 @@ def Add_Dash(server):
         # df.insert(1,'Cheap', resultCheap)
         # df.insert(2,'Other', resultExp)
 
-        locale.setlocale(locale.LC_ALL, request_locale)
+        # locale.setlocale(locale.LC_ALL, request_locale)
 
         
 
