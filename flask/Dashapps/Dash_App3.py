@@ -48,7 +48,8 @@ def basic_card():
                             ],
                             width=6
                         ),
-                    ]
+                    ],
+                    style = { 'width': '80%'}
             ) 
         ],
         style={
@@ -69,7 +70,8 @@ def cheap_card():
                             ],
                             width=6
                         ),
-                    ]
+                    ],
+                    style = { 'width': '80%'}
             ),
             dbc.Row(
                     [
@@ -91,7 +93,8 @@ def cheap_card():
                             ],
                             width=6
                         ),
-                    ]
+                    ],
+                    style = { 'width': '80%'}
             ) 
         ],
         style={
@@ -112,7 +115,8 @@ def exp_card():
                             ],
                             width=6
                         ),
-                    ]
+                    ],
+                    style = { 'width': '80%'}
             ),
             dbc.Row(
                     [
@@ -137,7 +141,8 @@ def exp_card():
                             ],
                             width=6
                         ),
-                    ]
+                    ],
+                    style = { 'width': '80%'}
             ),
         ],
         style={
@@ -175,7 +180,8 @@ def result_card():
                         ),
 
 
-                ])
+                ],
+                    style = { 'width': '80%'})
             ]
         )
 
