@@ -152,14 +152,16 @@ def Add_Dash(server):
     def computeBalance(quantities,prices,percents):    
 
 
-        request_locale  = request.accept_languages.best_match(['en_US','de_DE'])
+         request_locale  = request.accept_languages.best_match(['en_US','de_DE'])
         if (request_locale=='en_US'): 
              dash_locale = 'en'
              sep_locale = "."
+             request_locale_utf8 = 'en_US.utf8'
         else:
             dash_locale = 'de'
-            sep_locale = ","  
-        # locale.setlocale(locale.LC_ALL, request_locale)
+            sep_locale = ","
+            request_locale_utf8 = 'de_DE.utf8'
+        locale.setlocale(locale.LC_ALL, request_locale)
         
         if len(quantities)==1:
             return get_dummy_result(len(quantities),"You need at least 2 assets")
@@ -193,10 +195,12 @@ def Add_Dash(server):
         if (request_locale=='en_US'): 
              dash_locale = 'en'
              sep_locale = "."
+             request_locale_utf8 = 'en_US.utf8'
         else:
             dash_locale = 'de'
             sep_locale = ","
-        # locale.setlocale(locale.LC_ALL, request_locale)
+            request_locale_utf8 = 'de_DE.utf8'
+        locale.setlocale(locale.LC_ALL, request_locale)
 
 
         if quantity is not None:

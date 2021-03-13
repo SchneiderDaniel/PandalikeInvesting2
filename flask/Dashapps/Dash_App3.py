@@ -368,11 +368,17 @@ def Add_Dash(server):
             resultCheap[i]*=cheap_up_months
             resultExp[i]*=exp_up_months
 
+    
         request_locale  = request.accept_languages.best_match(['en_US','de_DE'])
         if (request_locale=='en_US'): 
              dash_locale = 'en'
+             sep_locale = "."
+             request_locale_utf8 = 'en_US.utf8'
         else:
             dash_locale = 'de'
+            sep_locale = ","
+            request_locale_utf8 = 'de_DE.utf8'
+        locale.setlocale(locale.LC_ALL, request_locale)
 
         # print('dash_locale:')
         # print(dash_locale)
@@ -383,7 +389,6 @@ def Add_Dash(server):
         # df.insert(1,'Cheap', resultCheap)
         # df.insert(2,'Other', resultExp)
 
-        # locale.setlocale(locale.LC_ALL, request_locale)
 
         
 
