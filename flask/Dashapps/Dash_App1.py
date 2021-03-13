@@ -119,19 +119,21 @@ def getPieces(changes,prices):
         pieces.append(float(changes[i])/float(prices[i]))
     return pieces
 
+
+
 def convertToString(value_list):
     result = []
     for i in range(len(value_list)):
         if (value_list[i]>=0):
-            result.append("+"+"{:.2f}".format(value_list[i]))
+            result.append("+"+"{:n}".format(value_list[i]))
         if (value_list[i]<0):
-            result.append("{:.2f}".format(value_list[i]))
+            result.append("{:n}".format(value_list[i]))
     return result
 
 def convertToStringNoSign(value_list):
     result = []
     for i in range(len(value_list)):
-        result.append("{:.2f}".format(value_list[i]))
+        result.append("{:n}".format(value_list[i]))
     return result
 
 def Add_Dash(server):
@@ -147,7 +149,17 @@ def Add_Dash(server):
         Input(component_id={'type': 'dynamic-price', 'index': ALL}, component_property='value'),
         Input(component_id={'type': 'dynamic-percent', 'index': ALL}, component_property='value'),]
     )
-    def computeBalance(quantities,prices,percents):      
+    def computeBalance(quantities,prices,percents):    
+
+
+        request_locale  = request.accept_languages.best_match(['en_US','de_DE'])
+        if (request_locale=='en_US'): 
+             dash_locale = 'en'
+             sep_locale = "."
+        else:
+            dash_locale = 'de'
+            sep_locale = ","  
+        locale.setlocale(locale.LC_ALL, request_locale)
         
         if len(quantities)==1:
             return get_dummy_result(len(quantities),"You need at least 2 assets")
@@ -166,6 +178,8 @@ def Add_Dash(server):
         resutlText = []
         resutlText.append("The result is ready.")
 
+        # "{:n}".format(result)
+        # return "{:n}".format(convertToStringNoSign(new_Values)), "{:n}".format(convertToString(changes)), "{:n}".format(convertToString(pieces)), resutlText
         return convertToStringNoSign(new_Values), convertToString(changes), convertToString(pieces), resutlText
 
     @app.callback(
@@ -174,6 +188,17 @@ def Add_Dash(server):
         Input(component_id={'type': 'dynamic-price', 'index': MATCH}, component_property='value')]
     )
     def updateSumValue(quantity,price):      
+
+        request_locale  = request.accept_languages.best_match(['en_US','de_DE'])
+        if (request_locale=='en_US'): 
+             dash_locale = 'en'
+             sep_locale = "."
+        else:
+            dash_locale = 'de'
+            sep_locale = ","
+        locale.setlocale(locale.LC_ALL, request_locale)
+
+
         if quantity is not None:
             quantity = float(quantity)
         else:
@@ -183,7 +208,10 @@ def Add_Dash(server):
         else:
             price = 0.0
         result = price*quantity
-        return ["%.2f" % result]
+
+        conv_result ="{:n}".format(result)
+        return [conv_result]
+        # return ["%.2f" % result]
 
     @app.callback(
         Output('container_asset', 'children'),

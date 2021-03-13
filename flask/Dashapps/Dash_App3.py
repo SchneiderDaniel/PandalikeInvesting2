@@ -374,10 +374,10 @@ def Add_Dash(server):
         else:
             dash_locale = 'de'
 
-        print('dash_locale:')
-        print(dash_locale)
-        print('request_locale')
-        print(request_locale)
+        # print('dash_locale:')
+        # print(dash_locale)
+        # print('request_locale')
+        # print(request_locale)
 
         # df = pd.Series(resultReference,index=dates)
         # df.insert(1,'Cheap', resultCheap)
