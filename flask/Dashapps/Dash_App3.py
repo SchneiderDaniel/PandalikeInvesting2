@@ -378,7 +378,7 @@ def Add_Dash(server):
             dash_locale = 'de'
             sep_locale = ","
             request_locale_utf8 = 'de_DE.utf8'
-        locale.setlocale(locale.LC_ALL, request_locale)
+        locale.setlocale(locale.LC_ALL, request_locale_utf8)
 
         # print('dash_locale:')
         # print(dash_locale)
