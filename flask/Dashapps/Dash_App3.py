@@ -22,7 +22,7 @@ url_base = '/dash/app3/'
 def description_card():
     return html.Div(
         id="description_card",
-        children="The question about active vs passive investments is present in many discussions about investing. What is true for most instances is, that an active investment fund is often more expensive than their passive counterparts (both investments based on the same! benchmark) but promises outperformance. The question that this tool wants to answer is, how much outperformance (%, pa) does the more expensive investment need, to get close to their benchmark index, as well as to the cheaper investment, e.g. an index fund. Note: The performance is computed on a monthly basis.",
+        children="The question about active vs passive investments is present in many discussions about investing. What is true for most instances is, that an active investment fund is often more expensive than their passive counterparts (if both are based on the same! benchmark) but promises outperformance. The question that this tool wants to answer is, how much outperformance (%, pa) does the more expensive investment need, in order to get close to their benchmark index, as well as to the cheaper investment, e.g. an index fund. Note: The performance is computed on a monthly basis.",
     style={
         'backgroundColor': colors['background'],
     })
