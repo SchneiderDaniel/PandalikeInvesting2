@@ -159,7 +159,7 @@ def Add_Dash(server):
         else:
             dash_locale = 'de'
             sep_locale = ","  
-        locale.setlocale(locale.LC_ALL, request_locale)
+        # locale.setlocale(locale.LC_ALL, request_locale)
         
         if len(quantities)==1:
             return get_dummy_result(len(quantities),"You need at least 2 assets")
@@ -196,7 +196,7 @@ def Add_Dash(server):
         else:
             dash_locale = 'de'
             sep_locale = ","
-        locale.setlocale(locale.LC_ALL, request_locale)
+        # locale.setlocale(locale.LC_ALL, request_locale)
 
 
         if quantity is not None:
