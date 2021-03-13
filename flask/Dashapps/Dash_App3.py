@@ -13,6 +13,9 @@ from .dash_base import warning_card, colors
 import dash_table
 from datetime import datetime
 import numpy as np
+from flask import request
+import locale
+
 
 url_base = '/dash/app3/'
 
@@ -186,6 +189,7 @@ def result_card():
         )
 
 
+
 # The Layout
 layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor': colors['background']}, children=[
     html.H1(
@@ -255,12 +259,15 @@ def cast_float(val):
     return float(val)
 
 def Add_Dash(server):
-    app = Dash(server=server, url_base_pathname=url_base, external_stylesheets = [dbc.themes.BOOTSTRAP], meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}])
+    app = Dash(server=server, url_base_pathname=url_base, external_stylesheets = [dbc.themes.BOOTSTRAP], external_scripts = ["https://cdn.plot.ly/plotly-locale-de-latest.js"], meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}])
+    
     apply_layout_with_auth(app, layout)
 
+    
 
     @app.callback(
         [Output('graph', 'figure'),
+        Output('graph', 'config'),
         Output("benchmark-output", "children"),
         Output("cheaper-output", "children"),
         Output("other-output", "children")],
@@ -361,16 +368,36 @@ def Add_Dash(server):
             resultCheap[i]*=cheap_up_months
             resultExp[i]*=exp_up_months
 
+        request_locale  = request.accept_languages.best_match(['en_US','de_DE'])
+        if (request_locale=='de_DE'): 
+             dash_locale = 'de'
+        else:
+            dash_locale = 'en'
 
-
+        print('dash_locale:')
+        print(dash_locale)
+        print('request_locale')
+        print(request_locale)
 
         # df = pd.Series(resultReference,index=dates)
         # df.insert(1,'Cheap', resultCheap)
         # df.insert(2,'Other', resultExp)
 
-        str_res_ref = "%.2f" % resultReference[len(resultReference)-1]
-        str_res_cheap =  "%.2f" % resultCheap[len(resultCheap)-1]
-        str_res_exp  =  "%.2f" %  resultExp[len(resultExp)-1]
+        locale.setlocale(locale.LC_ALL, request_locale)
+
+        
+
+        # str_res_ref = "%.2f" % resultReference[len(resultReference)-1]
+        # str_res_cheap =  "%.2f" % resultCheap[len(resultCheap)-1]
+        # str_res_exp  =  "%.2f" %  resultExp[len(resultExp)-1]
+
+        # print("{:n}".format(str_res_ref))
+
+        str_res_ref ="{:n}".format(resultReference[len(resultReference)-1])
+        str_res_cheap =  "{:n}".format(resultCheap[len(resultCheap)-1])
+        str_res_exp  =  "{:n}".format(resultExp[len(resultExp)-1]
+)
+
 
 
         resultReference = list(np.around(np.array(resultReference),0))
@@ -391,6 +418,9 @@ def Add_Dash(server):
         pd.set_option('display.max_rows', None)  # or 1000
         # print(df)
 
+     
+
+ 
 
         # Build graph
         layoutGraph = go.Layout(
@@ -404,6 +434,7 @@ def Add_Dash(server):
                 linecolor="#BCCCDC",
                 showspikes=True, # Show spike line for X-axis
                 # Format spike
+                
                 spikethickness=2,
                 spikedash="dot",
                 spikecolor="#999999",
@@ -435,6 +466,6 @@ def Add_Dash(server):
         # print(str_res_ref)
 
         # fig = px.line(df, x='Dates')
-        return fig, str_res_ref,str_res_cheap,str_res_exp
+        return fig,dict(locale=dash_locale), str_res_ref,str_res_cheap,str_res_exp
 
     return app.server

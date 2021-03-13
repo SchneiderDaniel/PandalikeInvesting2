@@ -292,7 +292,7 @@ def getAllPortfolioCorrelation(tickers,percents,start,end):
 
 
 def Add_Dash(server):
-    app = Dash(server=server, url_base_pathname=url_base, external_stylesheets = [dbc.themes.BOOTSTRAP], meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}])
+    app = Dash(server=server, url_base_pathname=url_base, external_stylesheets = [dbc.themes.BOOTSTRAP], external_scripts = ["https://cdn.plot.ly/plotly-locale-de-latest.js"], meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}])
     app.config.suppress_callback_exceptions = True
     apply_layout_without_auth(app, layout)
 

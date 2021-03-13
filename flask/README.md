@@ -67,3 +67,4 @@ You need to set the following env. variables.
 [Dynamic Callback Tutorial](https://www.youtube.com/watch?v=4gDwKYaA6ww)
 [Dynamic Callback Docu](https://dash.plotly.com/pattern-matching-callbacks)
 [uwsgi example](https://www.techatbloomberg.com/blog/configuring-uwsgi-production-deployment/)
+[string formattting](https://mkaz.blog/code/python-string-format-cookbook/)
