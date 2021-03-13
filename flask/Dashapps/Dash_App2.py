@@ -320,7 +320,8 @@ def Add_Dash(server):
         Input('my-date-picker-range', 'end_date')]
     )
     def compute(ticker_values, percent_values,n_clicks,start_date, end_date):    
-        
+        print ('Start Correlation Computation')
+
         request_locale  = request.accept_languages.best_match(['en_US','de_DE'])
         if (request_locale=='en_US'): 
              dash_locale = 'en'
@@ -379,7 +380,7 @@ def Add_Dash(server):
 
             
 
-
+            print ('End Correlation Computation')
             return 'Finished: Maximum timeframe from {} to {}'.format(corr_result_max[1],corr_result_max[2]), df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, df_corr_result_max_monthly.to_dict(orient='records'),columns_corr_result_max_monthly, df_corr_result_max_c.to_dict(orient='records'),columns_corr_result_max_c, df_corr_result_max_monthly_c.to_dict(orient='records'),columns_corr_result_max_monthly_c, correlationsDF.to_dict(orient='records'),columns_correlationsDF
              
         return msg, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max, df_corr_result_max.to_dict(orient='records'),columns_corr_result_max
