@@ -45,8 +45,8 @@ def ticker_card():
             html.H3(children='Portfolio'),
             dbc.Alert(
                 [
-                    "You can get Tickers from ",
-                    html.A("here", href="https://finance.yahoo.com", className="alert-link", target='_blank'),
+                    "You can get Tickers from www.finance.yahoo.com ",
+                    # html.A(" www.finance.yahoo.com", href="https://finance.yahoo.com", className="alert-link", target='_blank'),
                 ],
                 color="primary",
             ),
