@@ -26,4 +26,12 @@ _templates
 # javascript
 package-lock.json
 
+#pw files
 .deployment
+.env
+flask.env
+
+#volumes
+postgres_db
+flask_webapp
+nginx_web_server
