@@ -14,6 +14,8 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app 
 ADD . /app
 
+RUN apt-get update
+RUN apt-get -y install locales locales-all
 
 RUN pip install --upgrade pip
 
