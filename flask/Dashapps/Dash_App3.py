@@ -17,12 +17,12 @@ from flask import request
 import locale
 
 
-url_base = '/dash/app3/'
+url_base = '/dash/app3/' 
 
 def description_card():
     return html.Div(
         id="description_card",
-        children="The question about active vs passive investments is present in many discussions about investing. What is true for most instances is, that an active investment fund is often more expensive than their passive counterparts (if both are based on the same! benchmark) but promises outperformance. The question that this tool wants to answer is, how much outperformance (%, pa) does the more expensive investment need, in order to get close to their benchmark index, as well as to the cheaper investment, e.g. an index fund. Note: The performance is computed on a monthly basis.",
+        children="The question about active vs passive investments is present in many discussions about investing. What is true for most instances is, that an active investment fund is often more expensive than their passive counterparts. If you now have an active fund that has an official benchmark index, you can compare the fund to its benchmark index and to an passive investment in this exact same benchmark index (e.g. an ETF).  The question that this tool wants to answer is, how much outperformance (%, pa) after costs does the active investment need, in order to get close to their benchmark index and to the passive investment. Note: The performance is computed on a monthly basis and that it makes mo sense to compare two investments with different benchmarks.",
     style={
         'backgroundColor': colors['background'],
     })
@@ -63,7 +63,7 @@ def basic_card():
 def cheap_card():
     return html.Div(
         children=[
-            html.H3(children='Cheaper Investment'),
+            html.H3(children='Passive Investment'),
             dbc.Row(
                     [
                         dbc.Col( 
@@ -108,7 +108,7 @@ def cheap_card():
 def exp_card():
     return html.Div(
         children=[
-            html.H3(children='Other Investment'),
+            html.H3(children='Active Investment'),
             dbc.Row(
                     [
                         dbc.Col( 
@@ -167,7 +167,7 @@ def result_card():
                         ),
                     dbc.Col( 
                             children=[
-                                html.Div("Cheaper"), 
+                                html.Div("Passive"), 
                                 html.Span(id="cheaper-output", style={"vertical-align": "middle","font-style": "italic","color" : "red" }),
                                 
                             ],
@@ -175,7 +175,7 @@ def result_card():
                         ),
                     dbc.Col( 
                             children=[
-                                html.Div("Other"),
+                                html.Div("Active"),
                                 html.Span(id="other-output", style={"vertical-align": "middle","font-style": "italic","color" : "green" }),
                                 
                             ],
