@@ -84,8 +84,8 @@ ul li {
 
 
 #sidebar {
-    min-width: 220px;
-    max-width: 250px;
+    min-width: 170px;
+    max-width: 200px;
     background:  rgb(185, 185, 185);
     color: #fff;
     transition: all 0.6s cubic-bezier(0.945, 0.020, 0.270, 0.665);
@@ -93,7 +93,7 @@ ul li {
 }
 
 #sidebar.active {
-    margin-left: -250px;
+    margin-left: -200px;
     transform: rotateY(100deg);
 }
 
@@ -113,21 +113,38 @@ ul li {
     padding: 10px;
 }
 
-#sidebar ul li a {
+/* #sidebar ul li a {
     padding: 10px;
     font-size: 1.1em;
     display: block;
     color: #444444;
+} */
+#sidebar ul li {
+    margin-left:10px;
+    padding: 5px;
+    font-size: 1.1em;
+    display: block;
+    color: #444444;
 }
+
 #sidebar ul li a:hover {
     color: black;
     background: #fff;
+    /* margin-left:10px; */
+    padding: 5px;
+    font-size: 1.1em;
+    display: block;
 }
 
-#sidebar ul li.active > a, a[aria-expanded="true"] {
+.img-max {
+    max-width: 100px;
+    background-color: transparent;
+  }
+
+/* #sidebar ul li.active > a, a[aria-expanded="true"] {
     color: #fff;
     background: #00b0f0;
-}
+} */
 
 
 /* a[data-toggle="collapse"] {
@@ -214,7 +231,7 @@ a.article, a.article:hover {
 ----------------------------------------------------- */
 @media (max-width: 768px) {
     #sidebar {
-        margin-left: -250px;
+        margin-left: -200px;
         transform: rotateY(90deg);
     }
     #sidebar.active {

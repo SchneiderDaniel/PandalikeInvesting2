@@ -1,26 +1,46 @@
 <div class="sidebar-header">
 
-  <div class="container h-100">
-    <div class="row align-items-center h-100">
-        <div class="col-md mx-auto">       
-          <img src="/static/images/img.png" class="img-fluid" alt="Responsive image">       
-        </div>
-        <div class="col-6 mx-auto">     
+  <div class="container">
+    <div class="row align-items-center">
+        <!-- <div class="col-6 mx-auto">      -->
           <h5>Pandalike  <br/> <b> Investing</b></h5>     
-      </div>
+        <!-- </div> -->
     </div>
-</div>
+
+    <div class="row">
+      <!-- <div class="img-max">
+      <img  class=" mx-auto img-thumbnail"  src="/static/images/img.png">
+      </div> -->
+      <!-- <div class="col-sm-8">        -->
+        <img src="/static/images/img.png" class="img-fluid" alt="Responsive image">       
+      <!-- </div> -->
+    </div>
+
+
+    <!-- <div class="row align-items-center h-100">
+      <div class="col-md mx-auto">       
+        <img src="/static/images/img.png" class="img-fluid" alt="Responsive image">       
+      </div>
+    </div> -->
+
+
+  </div>
+
+
+
+
 
 </div>
 
 <ul class="list-group">
   
   <li><a href="{{ url_for( 'home_blueprint.index') }}"><i class="fa fa-home"></i> Home <span></span></a></li>
+  <li> <i class="fa fa-wrench"></i> Tools <span></span></li>
 
   <!-- <li><a href="#"><i class="fa fa-th-list"></i> Portfolio <span></span></a></li> -->
 
   <li>
-      <a href="#toolsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-wrench"></i> Tools </a>
+      <a href="#toolsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"> Portfolio </a>
       <ul class="collapse list-unstyled" id="toolsSubmenu">
           <li>
               <a href="{{ url_for( 'DashExample_blueprint.app1_template') }}">Rebalancing</a>
