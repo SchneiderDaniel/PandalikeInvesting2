@@ -22,7 +22,7 @@ url_base = '/dash/app3/'
 def description_card():
     return html.Div(
         id="description_card",
-        children="The question about active vs passive investments is present in many discussions about investing. What is true for most instances is, that an active investment fund is often more expensive than their passive counterparts. If you now have an active fund that has an official benchmark index, you can compare the fund to its benchmark index and to an passive investment in this exact same benchmark index (e.g. an ETF).  The question that this tool wants to answer is, how much outperformance (%, pa) after costs does the active investment need, in order to get close to their benchmark index and to the passive investment. Note: The performance is computed on a monthly basis and that it makes mo sense to compare two investments with different benchmarks.",
+        children = [dcc.Markdown('''If you have to choose between two investment funds that are based on the **same benchmark**, chances are high that they have different costs. This tool wants to give you an idea on the impact of the costs for the performance. In addition, we give you the opportunity to simulate a scenario where a fund delivers an outperformance to its benchmark. This can give you an idea how much outperformance per year is needed, in order to outperform the benchmark after costs.''')],
     style={
         'backgroundColor': colors['background'],
     })
@@ -63,13 +63,13 @@ def basic_card():
 def cheap_card():
     return html.Div(
         children=[
-            html.H3(children='Passive Investment'),
+            html.H3(children='Fund #1'),
             dbc.Row(
                     [
                         dbc.Col( 
                             children=[
                                 html.Div("Total Expense Ratio - TER (%, pa)"),
-                                dbc.Input(type="number", id="edit_cheap_ter", value='0.25', placeholder="Enter the perTERformance "),
+                                dbc.Input(type="number", id="edit_cheap_ter", value='0.25', placeholder="Enter the performance "),
                             ],
                             width=6
                         ),
@@ -108,7 +108,7 @@ def cheap_card():
 def exp_card():
     return html.Div(
         children=[
-            html.H3(children='Active Investment'),
+            html.H3(children='Fund #2'),
             dbc.Row(
                     [
                         dbc.Col( 
@@ -129,8 +129,9 @@ def exp_card():
                                 dbc.Input(type="number", id="edit_exp_trans_fee_per", value='0.2', placeholder="Enter the performance "),
                                 html.Div("Other costs (once, pa, %)"),
                                 dbc.Input(type="number", id="edit_exp_other_per", value='0.0', placeholder="Enter the duration"),
+                                html.Br(),
                                 html.Div("Outperformance (%, pa)"),
-                                dbc.Input(type="number", id="edit_outperf", value='0.5', placeholder="Enter the outperformance ")
+                                dbc.Input(type="number", id="edit_outperf", value='1.45', placeholder="Enter the outperformance ")
                                 
                             ],
                             width=6
@@ -167,7 +168,7 @@ def result_card():
                         ),
                     dbc.Col( 
                             children=[
-                                html.Div("Passive"), 
+                                html.Div("Fund #1"), 
                                 html.Span(id="cheaper-output", style={"vertical-align": "middle","font-style": "italic","color" : "red" }),
                                 
                             ],
@@ -175,7 +176,7 @@ def result_card():
                         ),
                     dbc.Col( 
                             children=[
-                                html.Div("Active"),
+                                html.Div("Fund #2"),
                                 html.Span(id="other-output", style={"vertical-align": "middle","font-style": "italic","color" : "green" }),
                                 
                             ],
@@ -193,7 +194,7 @@ def result_card():
 # The Layout
 layout = html.Div(style={'font-family':'"Poppins", sans-serif', 'backgroundColor': colors['background']}, children=[
     html.H1(
-        children='Active vs Passive',
+        children='Impact of Costs to your Performance',
         style={
             'textAlign': 'center',
             'color': colors['text'],
@@ -461,10 +462,10 @@ def Add_Dash(server):
                     name='Benchmark'))
         fig.add_trace(go.Scatter(x=dates, y=resultCheap,
                     mode='lines',
-                    name='Cheaper'))
+                    name='Fund #1'))
         fig.add_trace(go.Scatter(x=dates, y=resultExp,
                     mode='lines',
-                    name='Other'))
+                    name='Fund #2'))
 
      
 

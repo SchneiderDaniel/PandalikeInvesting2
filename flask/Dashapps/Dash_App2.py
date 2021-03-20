@@ -33,7 +33,7 @@ df_corr =  get_dummy_df()
 def description_card():
     return html.Div(
         id="description_card",
-        children="This tool can compute the correlation of your assets. It uses the ticker of yahoo and computes the correlation for all combinations of your assets. This is called the correlation matrix. The coorelation is computed on the daily, as well as on the monthly performance. We compute it for the maximum timeframe of the data. But additionally, you can also enter a custom timeframe. You have to be careful with currency. We don't check the currency, so don't mix currencies.",
+        children = [dcc.Markdown('''This tool can compute the correlation of your assets. It uses the ticker of yahoo and computes the correlation for all combinations of your assets. This is called the correlation matrix. The coorelation is computed on the daily, as well as on the monthly performance. We compute it for the maximum timeframe of the data. But additionally, you can also enter a custom timeframe. You have to be careful with currency. We don't check the currency, so **don't mix currencies**.''')],
     style={
         'backgroundColor': colors['background'],
     })
@@ -477,7 +477,7 @@ def Add_Dash(server):
                         ),
                         dbc.Col( 
                             children=[
-                                html.Div("Percent (%):"),
+                                html.Div("%"),
                                 dbc.Input(type="number", value='0', placeholder="Enter %",
                                 id={
                                     'type': 'dynamic-percent',
