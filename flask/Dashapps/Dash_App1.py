@@ -232,7 +232,7 @@ def Add_Dash(server):
                         dbc.Col( 
                             children=[
                                 html.Div("Pieces:"),
-                                dbc.Input(type="number", value='4', placeholder="Enter the number of pieces ",
+                                dbc.Input(type="number", value='126', placeholder="Enter the number of pieces ",
                                 id={
                                     'type': 'dynamic-quantity',
                                     'index': n_clicks
@@ -243,7 +243,7 @@ def Add_Dash(server):
                         dbc.Col( 
                             children=[
                                 html.Div("Price:"),
-                                dbc.Input(type="number", value='213.13', placeholder="Enter price per piece",
+                                dbc.Input(type="number", value='80.13', placeholder="Enter price per piece",
                                 id={
                                     'type': 'dynamic-price',
                                     'index': n_clicks
@@ -265,7 +265,7 @@ def Add_Dash(server):
                         dbc.Col( 
                             children=[
                                 html.Div("Goal (%):"),
-                                dbc.Input(type="number", value='10', placeholder="Enter percent of asset",
+                                dbc.Input(type="number", value='100', placeholder="Enter percent of asset",
                                 id={
                                     'type': 'dynamic-percent',
                                     'index': n_clicks
