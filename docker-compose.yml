@@ -47,6 +47,7 @@ services:
       - /etc/ssl:/etc/ssl # dhparams file
       - /etc/letsencrypt/live:/etc/letsencrypt/live # current certificate
       - /etc/letsencrypt/archive:/etc/letsencrypt/archive # all certificates (symlinks from /live points here)
+      - /etc/letsencrypt/wk:/etc/letsencrypt/wk # folder where you have to put the brave reward token
     depends_on:
       - flask_webapp
     networks:
